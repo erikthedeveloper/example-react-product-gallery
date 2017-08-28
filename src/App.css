@@ -1,3 +1,55 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* END RESET*/
+
+
 html, body {
   margin: 0;
   height: 100%;
@@ -14,19 +66,21 @@ body {
 
 .header-flex {
   display: flex;
-  align-content: center;
+  align-items: center;
 }
 
 .Header {
   height: 166px;
+  margin-bottom: 30px;
   background-color: #F8CB00;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  border-top: 6px solid #6364D8;
 }
 
 .Header__title {
-  width: 193px;
+  width: 290px;
   color: #FFFFFF;
   font-size: 36px;
   font-weight: 900;
@@ -34,14 +88,31 @@ body {
 }
 
 .SearchInput {
-  width: 500px;
+  width: 625px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  font-size: 24px;
+
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
-.SearchInput__icon {}
+.SearchInput__icon {
+  color: #5C5C5C;
+  width: 25px;
+  padding: 10px;
+}
 
 .SearchInput__input {
-  height: 50px;
-  width: 100%;
+  flex: 1;
+  width: 200px;
+  color: rgba(123,123,123,0.78);
+  font-size: 15px;
+  float: left;
+  border: none;
+  border-radius: 5px;
 }
 
 .primary-flex {
@@ -54,7 +125,7 @@ body {
 }
 
 .Sidebar {
-  width: 300px;
+  width: 290px;
   float: left;
 }
 
@@ -62,6 +133,11 @@ body {
 
 .Sidebar__links {
   list-style: none;
+  font-size: 15px;
+}
+
+.Sidebar_links__item {
+  padding: 8px 0;
 }
 
 .Sidebar_links__item, .Sidebar_links__item a {
@@ -73,29 +149,44 @@ body {
   color: #F8CB00;
 }
 
-.Sidebar__heading {}
+.Sidebar__heading {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.Sidebar__heading:nth-child(n + 2) {
+  margin-top: 30px;
+}
 
 .PriceFilter {}
 
 .PriceFilter__input {
   height: 30px;
   width: 59px;
+  margin-right: 10px;
   border: 1px solid #B8B8B8;
   border-radius: 2px;
+  text-indent: 8px;
 }
 
 .PriceFilter__input {}
 
 .Button {
-  height: 30px;
+  height: 34px;
   width: 91px;
   border-radius: 5px;
   background-color: #F8CB00;
+  border: none;
 }
 
 .primary-content {}
 
-.PrimaryHeading {}
+.PrimaryHeading {
+  font-size: 27px;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
 
 .Grid {}
 
@@ -114,6 +205,7 @@ body {
 }
 
 .ProductGridItem {
+  cursor: pointer;
   text-align: center;
   height: 355px;
   width: 190px;
@@ -135,4 +227,25 @@ body {
 .ProductGridItem__price {
   color: #F8CB00;
   font-size: 20px;
+}
+
+.Modal {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255,255,255,0.86);;
+}
+
+.Modal__contents {
+  position: relative;
+  top: 20%;
+  min-height: 400px;
+  padding: 30px;
+  width: 600px;
+  margin: 0 auto;
+  background: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.05);
 }
