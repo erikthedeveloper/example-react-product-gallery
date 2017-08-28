@@ -205,10 +205,11 @@ body {
 }
 
 .ProductGridItem {
+  padding: 10px 5px;
   cursor: pointer;
   text-align: center;
-  height: 355px;
-  width: 190px;
+  height: 300px;
+  width: 180px;
   border: 1px solid #E4E4E4;
   border-radius: 4px;
   box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.05);
@@ -221,7 +222,8 @@ body {
 
 .ProductGridItem__name {
   font-size: 18px;
-  padding: 20px 0 30px 0;
+  padding-top: 20px;
+  height: 60px;
 }
 
 .ProductGridItem__price {

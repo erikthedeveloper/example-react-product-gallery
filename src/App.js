@@ -71,7 +71,7 @@ class App extends Component {
       .filter(product => product.categoryId === activeCategory)
       .filter(minPrice ? ({price}) => price >= minPrice : noopTrue)
       .filter(maxPrice ? ({price}) => price <= maxPrice : noopTrue)
-      .filter(searchText.length > 0 ? ({name}) => name.includes(searchText) : noopTrue)
+      .filter(searchText.length > 0 ? ({name}) => name.toLowerCase().includes(searchText.toLowerCase()) : noopTrue)
     ;
 
     const viewingItem = viewingItemId
