@@ -5,6 +5,7 @@
   "dependencies": {
     "faker": "^4.1.0",
     "lodash": "4.17.4",
+    "normalize.css": "^7.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
