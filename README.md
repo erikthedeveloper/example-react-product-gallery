@@ -6,7 +6,7 @@ For this demo project, you will build a product gallery using React. The finishe
 - The project consists of 2 primary screens: "Product Listing" and "Product Details".
 - The required JSON data is provided for you. See `src/data.js`.
 - You will not have to implement any HTTP requests to fetch the data. You may read the data directly from `src/data.js`.
-- The project should be completed in 4 hours or less (i.e. a single evening).
+- The project should be completed in roughly 4 hours (i.e. a single evening).
 - Submit the project via email upon completion, providing a link to your project repository.
 
 ## Instructions
@@ -26,7 +26,7 @@ _*`yarn` is interchangable with `npm` throughout these instructions_
 
 _This screen displays a listing of products along with various search/filter controls._
 
-![](https://user-images.githubusercontent.com/1240178/29729638-39db946c-899a-11e7-88a1-7a14f7406f16.png)
+TODO: Image here...
 
 **Display Products**
 
@@ -50,7 +50,7 @@ Filter products by min price and max price. Both fields being optional.
 
 _This screen displays more detailed information about a single product._
 
-![](https://user-images.githubusercontent.com/1240178/29729639-3bb3658a-899a-11e7-9b6e-b3a61b0a59d7.png)
+TODO: Image here...
 
 ### _*Bonus Feature_
 
@@ -62,4 +62,4 @@ Select one bonus feature to implement:
 - Add tests.
 - Add a "Related Products" section to the Product Details page.
 - Animate transitions between screens.
-- TODO: More/better ideas here!
+- _TODO: More/better ideas here! Also, remove the bad ideas._
