@@ -12,7 +12,7 @@ const dummyPrice = (id) => Number(parseFloat(id * 4 % 50).toFixed(2));
 
 let productId = 0;
 const products = categories.reduce((products, category) => {
-  return _.shuffle([
+  return [
     ...products,
     ..._.range(PRODUCTS_PER_CATEGORY).map(() => ({
       id: productId++,
@@ -24,7 +24,7 @@ const products = categories.reduce((products, category) => {
       },
       categoryId: category.id,
     })),
-  ]);
+  ];
 }, []);
 
 export {
