@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import './App.css';
 import * as data from './data';
+
+const formatDollar = float => `$${parseFloat(float).toFixed(2)}`;
 
 class App extends Component {
   static propTypes = {
@@ -106,9 +107,26 @@ class App extends Component {
               className="Modal"
               onClick={this.unFocusItem}
             >
-              <div className="Modal__contents">
-                <img src={viewingItem.images.large} alt={viewingItem.name} />
-                Hey! You are "viewing" item: {viewingItem.name}. Click to clear.
+              <div className="Modal__contents" onClick={(event) => {event.stopPropagation()}}>
+
+                <i className="fa fa-times Modal__x" onClick={this.unFocusItem} />
+
+                <div className="ProductDetails">
+                  <img
+                    src={viewingItem.images.large}
+                    className="ProductDetails__image"
+                  />
+                  <div className="ProductDetails__name">
+                    {viewingItem.name}
+                  </div>
+                  <div className="ProductDetails__price">
+                    {formatDollar(viewingItem.price)}
+                  </div>
+                  <div className="ProductDetails__description">
+                    {viewingItem.description || 'DESCRIPTION HERE...'}
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
@@ -171,9 +189,7 @@ class App extends Component {
             </h1>
 
             <div className="Grid">
-              {_.chunk(visibleProducts, 4).map((productsRow, i) => (
-                <div className="Grid__row" key={i}>
-                  {productsRow.map(product => (
+                  {visibleProducts.map(product => (
                     <div className="Grid__item" key={product.id}>
                       <div className="ProductGridItem" onClick={this.onClickItem(product.id)}>
                         <img
@@ -185,11 +201,9 @@ class App extends Component {
                           {product.name}
                         </div>
                         <div className="ProductGridItem__price">
-                          ${product.price}
+                          {formatDollar(product.price)}
                         </div>
                       </div>
-                    </div>
-                  ))}
                 </div>
               ))}
 
