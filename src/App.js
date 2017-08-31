@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
-import * as data from './data';
+import {findById, noopTrue} from './utils';
+import {Header} from './Header';
+import {ProductGrid} from './ProductGrid';
+import {Sidebar} from './Sidebar';
+import {ProductDetailsModal} from './ProductDetailsModal';
 
-const formatDollar = float => `$${parseFloat(float).toFixed(2)}`;
+// Various filters for filtering down products
+const filterCategory = (categoryId) => ({categoryId}) =>
+  categoryId === categoryId;
 
-class App extends Component {
+const filterMinPrice = (minPrice) => ({price}) =>
+  price >= minPrice;
+
+const filterMaxPrice = (maxPrice) => ({price}) =>
+  price <= maxPrice;
+
+const filterSearchText = (searchText) => ({name}) =>
+  name.toLowerCase().includes(searchText.toLowerCase());
+
+export default class App extends Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -24,27 +39,18 @@ class App extends Component {
     }))
   };
 
-  static defaultProps = {
-    categories: data.categories,
-    products: data.products,
+  state = {
+    activeCategoryId: this.props.categories[0].id,
+
+    minPrice: null,
+    maxPrice: null,
+
+    searchText: '',
+
+    viewingItemId: null,
   };
 
-  constructor() {
-    super(...arguments);
-
-    this.state = {
-      activeCategory: this.props.categories[0].id,
-
-      minPrice: null,
-      maxPrice: null,
-
-      searchText: '',
-
-      viewingItemId: null,
-    };
-  }
-
-  setActiveCategory = (activeCategory) => this.setState({activeCategory});
+  setActiveCategoryId = (activeCategoryId) => this.setState({activeCategoryId});
 
   setMinPrice = (minPrice) => this.setState({minPrice});
   setMaxPrice = (maxPrice) => this.setState({maxPrice});
@@ -55,167 +61,58 @@ class App extends Component {
     this.setState({viewingItemId});
   };
 
-  unFocusItem = () => this.setState({viewingItemId: null});
+  closeProductDetails = () => this.setState({viewingItemId: null});
+
+  getVisibleProducts() {
+    const {state} = this;
+    return this.props.products
+      .filter(filterCategory(this.state.activeCategoryId))
+      .filter(state.minPrice ? filterMinPrice(state.minPrice) : noopTrue)
+      .filter(state.maxPrice ? filterMaxPrice(state.maxPrice) : noopTrue)
+      .filter(state.searchText.length > 0 ? filterSearchText(state.searchText) : noopTrue);
+  }
 
   render() {
-    const {
-      activeCategory,
-      minPrice, maxPrice,
-      searchText,
-      viewingItemId,
-    } = this.state;
-    const {products, categories} = this.props;
+    const {props, state} = this;
 
-    const noopTrue = () => true;
-
-    const visibleProducts = products
-      .filter(product => product.categoryId === activeCategory)
-      .filter(minPrice ? ({price}) => price >= minPrice : noopTrue)
-      .filter(maxPrice ? ({price}) => price <= maxPrice : noopTrue)
-      .filter(searchText.length > 0 ? ({name}) => name.toLowerCase().includes(searchText.toLowerCase()) : noopTrue)
-    ;
-
-    const viewingItem = viewingItemId
-      ? products.find(({id}) => id === viewingItemId)
-      : null;
+    const viewingItem = state.viewingItemId ? findById(props.products, state.viewingItemId) : null;
+    const activeCategoryName = findById(props.categories, state.activeCategoryId).name;
 
     return (
       <div>
-        <div className="Header">
-          <div className="content header-flex">
-            <div className="Header__title">
-              Amazing<br />
-              Store
-            </div>
-            <div className="SearchInput">
-              <i className="SearchInput__icon fa fa-search" />
-              <input
-                type="text"
-                className="SearchInput__input"
-                placeholder="Search products by name"
-                value={searchText}
-                onChange={({target: {value}}) => this.setSearchText(value)}
-              />
-            </div>
-
-          </div>
-        </div>
+        <Header
+          searchText={state.searchText}
+          setSearchText={this.setSearchText}
+        />
 
         <div className="content">
-          {viewingItemId > 0 && (
-            <div
-              className="Modal"
-              onClick={this.unFocusItem}
-            >
-              <div className="Modal__contents" onClick={(event) => {event.stopPropagation()}}>
+          <ProductDetailsModal
+            isOpen={Boolean(viewingItem)}
+            close={this.closeProductDetails}
+            item={viewingItem}
+          />
 
-                <i className="fa fa-times Modal__x" onClick={this.unFocusItem} />
+          <div className="primary-flex">
+            <Sidebar
+              categories={props.categories}
+              activeCategoryId={state.activeCategoryId}
+              setActiveCategoryId={this.setActiveCategoryId}
+              minPrice={state.minPrice}
+              setMinPrice={this.setMinPrice}
+              maxPrice={state.maxPrice}
+              setMaxPrice={this.setMaxPrice}
+            />
 
-                <div className="ProductDetails">
-                  <img
-                    src={viewingItem.images.large}
-                    className="ProductDetails__image"
-                  />
-                  <div className="ProductDetails__name">
-                    {viewingItem.name}
-                  </div>
-                  <div className="ProductDetails__price">
-                    {formatDollar(viewingItem.price)}
-                  </div>
-                  <div className="ProductDetails__description">
-                    {viewingItem.description || 'DESCRIPTION HERE...'}
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-        <div className="primary-flex">
-
-          <div className="Sidebar">
-
-            <div className="Sidebar__heading">
-              All Categories
-            </div>
-            <ul className="Sidebar__links">
-              {categories.map((category, i) => (
-                <li
-                  key={category.id}
-                  className={`Sidebar_links__item${activeCategory === category.id ? ' Sidebar_links__item--active' : ''}`}
-                >
-                  <a href="#" onClick={(event) => {
-                    this.setActiveCategory(category.id);
-                    event.preventDefault();
-                  }}>
-                    {category.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <div className="Sidebar__heading">
-              Filter By Price
-            </div>
-            <div className="PriceFilter">
-              <input
-                type="number"
-                className="PriceFilter__input"
-                placeholder="$ Min"
-                value={minPrice || ''}
-                onChange={({target: {value}}) => {
-                  this.setMinPrice(value);
-                }}
+            <div className="primary-content">
+              <ProductGrid
+                title={activeCategoryName}
+                items={this.getVisibleProducts()}
+                onClickItem={this.onClickItem}
               />
-              <input
-                type="number"
-                className="PriceFilter__input"
-                placeholder="$ Max"
-                value={maxPrice || ''}
-                onChange={({target: {value}}) => {
-                  this.setMaxPrice(value);
-                }}
-              />
-              <button className="Button Button--primary">
-                Go
-              </button>
             </div>
-
           </div>
-
-          <div className="primary-content">
-
-            <h1 className="PrimaryHeading">
-              {categories.find(({id}) => id === activeCategory).name}
-            </h1>
-
-            <div className="Grid">
-                  {visibleProducts.map(product => (
-                    <div className="Grid__item" key={product.id}>
-                      <div className="ProductGridItem" onClick={this.onClickItem(product.id)}>
-                        <img
-                          src={product.images.medium}
-                          className="ProductGridItem__image"
-                          alt={product.name}
-                        />
-                        <div className="ProductGridItem__name">
-                          {product.name}
-                        </div>
-                        <div className="ProductGridItem__price">
-                          {formatDollar(product.price)}
-                        </div>
-                      </div>
-                </div>
-              ))}
-
-            </div>
-
-          </div>
-        </div>
-
         </div>
       </div>
     );
   }
 }
-
-export default App;

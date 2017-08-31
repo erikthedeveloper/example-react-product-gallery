@@ -136,6 +136,12 @@ body {
   font-weight: 300;
 }
 
+.no-results-message {
+  font-size: 40px;
+  font-weight: 300;
+  margin-top: 30px;
+}
+
 .Grid__item {
   display: inline-block;
   margin-right: 25px;
