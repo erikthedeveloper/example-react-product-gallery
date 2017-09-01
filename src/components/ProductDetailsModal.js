@@ -1,5 +1,5 @@
 import React from 'react';
-import {formatDollar, stopPropagation} from './utils';
+import {formatDollar, stopPropagation} from '../utils';
 
 export const ProductDetailsModal = ({isOpen, close, item}) => {
   return !isOpen ? null : (

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
 import {findById, noopTrue} from './utils';
-import {Header} from './Header';
-import {ProductGrid} from './ProductGrid';
-import {Sidebar} from './Sidebar';
-import {ProductDetailsModal} from './ProductDetailsModal';
+import {Header} from './components/Header';
+import {ProductGrid} from './components/ProductGrid';
+import {Sidebar} from './components/Sidebar';
+import {ProductDetailsModal} from './components/ProductDetailsModal';
 
 // Various filters for filtering down products
 const filterCategory = (id) => ({categoryId}) =>
