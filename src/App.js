@@ -8,8 +8,8 @@ import {Sidebar} from './Sidebar';
 import {ProductDetailsModal} from './ProductDetailsModal';
 
 // Various filters for filtering down products
-const filterCategory = (categoryId) => ({categoryId}) =>
-  categoryId === categoryId;
+const filterCategory = (id) => ({categoryId}) =>
+  categoryId === id;
 
 const filterMinPrice = (minPrice) => ({price}) =>
   price >= minPrice;
@@ -64,12 +64,16 @@ export default class App extends Component {
   closeProductDetails = () => this.setState({viewingItemId: null});
 
   getVisibleProducts() {
-    const {state} = this;
+    const {
+      activeCategoryId, searchText,
+      minPrice, maxPrice,
+    } = this.state;
+
     return this.props.products
-      .filter(filterCategory(this.state.activeCategoryId))
-      .filter(state.minPrice ? filterMinPrice(state.minPrice) : noopTrue)
-      .filter(state.maxPrice ? filterMaxPrice(state.maxPrice) : noopTrue)
-      .filter(state.searchText.length > 0 ? filterSearchText(state.searchText) : noopTrue);
+      .filter(filterCategory(activeCategoryId))
+      .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
+      .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
+      .filter(searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
   }
 
   render() {
