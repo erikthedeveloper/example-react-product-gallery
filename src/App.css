@@ -83,6 +83,7 @@ body {
 .Sidebar__links {
   list-style: none;
   font-size: 15px;
+  padding: 0;
 }
 
 .Sidebar_links__item {
@@ -126,6 +127,7 @@ body {
   border-radius: 5px;
   background-color: #F8CB00;
   border: none;
+  cursor: pointer;
 }
 
 .primary-content {}
