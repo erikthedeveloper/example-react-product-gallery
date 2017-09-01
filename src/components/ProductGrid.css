@@ -27,7 +27,7 @@
   text-align: center;
   height: 300px;
   width: 180px;
-  border: 1px solid #E4E4E4;
+  border: 2px solid #E4E4E4;
   border-radius: 4px;
   box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.05);
   transition: 150ms;
@@ -35,7 +35,7 @@
 
 .ProductGridItem:hover {
   box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.10);
-  transform: scale(1.05);
+  border: 2px solid #f8cb00;
 }
 
 .ProductGridItem__image {
