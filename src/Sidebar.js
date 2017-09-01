@@ -1,4 +1,5 @@
 import React from 'react';
+import {PriceFilter} from './PriceFilter';
 
 export const Sidebar = (props) => (
   <div className="Sidebar">
@@ -24,28 +25,12 @@ export const Sidebar = (props) => (
     <div className="Sidebar__heading">
       Filter By Price
     </div>
-    <div className="PriceFilter">
-      <input
-        type="number"
-        className="PriceFilter__input"
-        placeholder="$ Min"
-        value={props.minPrice || ''}
-        onChange={({target: {value}}) => {
-          props.setMinPrice(value);
-        }}
-      />
-      <input
-        type="number"
-        className="PriceFilter__input"
-        placeholder="$ Max"
-        value={props.maxPrice || ''}
-        onChange={({target: {value}}) => {
-          props.setMaxPrice(value);
-        }}
-      />
-      <button className="Button Button--primary">
-        Go
-      </button>
-    </div>
+
+    <PriceFilter
+      minPrice={props.minPrice}
+      setMinPrice={props.setMinPrice}
+      maxPrice={props.maxPrice}
+      setMaxPrice={props.setMaxPrice}
+    />
   </div>
 );
