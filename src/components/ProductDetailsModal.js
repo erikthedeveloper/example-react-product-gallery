@@ -1,4 +1,5 @@
 import React from 'react';
+import './ProductDetailsModal.css';
 import {formatDollar, stopPropagation} from '../utils';
 
 export const ProductDetailsModal = ({isOpen, close, item}) => {

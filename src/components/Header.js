@@ -1,4 +1,5 @@
 import React from 'react';
+import './Header.css';
 
 export const Header = ({searchText, setSearchText}) => (
   <div className="Header">

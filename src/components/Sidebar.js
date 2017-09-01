@@ -1,4 +1,5 @@
 import React from 'react';
+import './Sidebar.css';
 import {PriceFilter} from './PriceFilter';
 
 export const Sidebar = (props) => (

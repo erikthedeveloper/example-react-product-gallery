@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './PriceFilter.css';
 
 export class PriceFilter extends Component {
   state = {

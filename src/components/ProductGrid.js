@@ -1,4 +1,5 @@
 import React from 'react';
+import './ProductGrid.css';
 import {formatDollar} from '../utils';
 
 export const ProductGrid = (props) => (
