@@ -54,6 +54,7 @@
 }
 
 .ProductDetails__description {
+  font-size: 20px;
   line-height: 2;
   font-weight: 300;
 }

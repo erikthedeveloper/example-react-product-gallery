@@ -15,6 +15,7 @@ export const ProductDetailsModal = ({isOpen, close, item}) => {
         <div className="ProductDetails">
           <img
             src={item.images.large}
+            alt={item.name}
             className="ProductDetails__image"
           />
           <div className="ProductDetails__name">
