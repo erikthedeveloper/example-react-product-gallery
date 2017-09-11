@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {BrowserRouter, Route} from 'react-router-dom';
+import qs from 'query-string';
 import './App.css';
 import {findById, noopTrue} from './utils';
 import {Header} from './components/Header';
 import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
+import {removeQuery} from './utils/routerUtils';
 
 // Various filters for filtering down products
 const filterCategory = (id) => ({categoryId}) =>
@@ -20,7 +23,7 @@ const filterMaxPrice = (maxPrice) => ({price}) =>
 const filterSearchText = (searchText) => ({name}) =>
   name.toLowerCase().includes(searchText.toLowerCase());
 
-export default class App extends Component {
+class App extends Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -46,8 +49,6 @@ export default class App extends Component {
     maxPrice: null,
 
     searchText: '',
-
-    viewingItemId: null,
   };
 
   setActiveCategoryId = (activeCategoryId) => this.setState({activeCategoryId});
@@ -56,12 +57,6 @@ export default class App extends Component {
   setMaxPrice = (maxPrice) => this.setState({maxPrice});
 
   setSearchText = (searchText) => this.setState({searchText});
-
-  onClickItem = (viewingItemId) => () => {
-    this.setState({viewingItemId});
-  };
-
-  closeProductDetails = () => this.setState({viewingItemId: null});
 
   getVisibleProducts() {
     const {
@@ -79,7 +74,6 @@ export default class App extends Component {
   render() {
     const {props, state} = this;
 
-    const viewingItem = state.viewingItemId ? findById(props.products, state.viewingItemId) : null;
     const activeCategoryName = findById(props.categories, state.activeCategoryId).name;
 
     return (
@@ -90,11 +84,6 @@ export default class App extends Component {
         />
 
         <div className="content">
-          <ProductDetailsModal
-            isOpen={Boolean(viewingItem)}
-            close={this.closeProductDetails}
-            item={viewingItem}
-          />
 
           <div className="primary-flex">
             <Sidebar
@@ -111,12 +100,31 @@ export default class App extends Component {
               <ProductGrid
                 title={activeCategoryName}
                 items={this.getVisibleProducts()}
-                onClickItem={this.onClickItem}
               />
             </div>
           </div>
         </div>
+
+        <Route path="/products" render={({location, history}) => {
+          const {itemId} = qs.parse(location.search);
+          return (
+            <ProductDetailsModal
+              isOpen={Boolean(itemId)}
+              close={() => history.push(removeQuery(location, 'itemId'))}
+              item={findById(props.products, Number(itemId))}
+            />
+          );
+        }} />
+
       </div>
     );
   }
+}
+
+export default function AppContainer(props) {
+  return (
+    <BrowserRouter>
+      <App {...props} />
+    </BrowserRouter>
+  )
 }
