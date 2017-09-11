@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import qs from 'query-string';
 import './App.css';
 import {findById, noopTrue} from './utils';
@@ -8,7 +8,8 @@ import {Header} from './components/Header';
 import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
-import {removeQuery} from './utils/routerUtils';
+import {addQuery, removeQuery} from './utils/routerUtils';
+import {getActiveCategoryId} from './utils/routes';
 
 // Various filters for filtering down products
 const filterCategory = (id) => ({categoryId}) =>
@@ -43,15 +44,22 @@ class App extends Component {
   };
 
   state = {
-    activeCategoryId: this.props.categories[0].id,
-
     minPrice: null,
     maxPrice: null,
 
     searchText: '',
   };
 
-  setActiveCategoryId = (activeCategoryId) => this.setState({activeCategoryId});
+  componentWillMount() {
+    this.ensureActiveCategoryRedirect();
+  }
+
+  ensureActiveCategoryRedirect() {
+    const {location, history, categories} = this.props;
+    if (!getActiveCategoryId(location)) {
+      history.push(addQuery(location, {categoryId: categories[0].id}));
+    }
+  }
 
   setMinPrice = (minPrice) => this.setState({minPrice});
   setMaxPrice = (maxPrice) => this.setState({maxPrice});
@@ -60,12 +68,12 @@ class App extends Component {
 
   getVisibleProducts() {
     const {
-      activeCategoryId, searchText,
+      searchText,
       minPrice, maxPrice,
     } = this.state;
 
     return this.props.products
-      .filter(filterCategory(activeCategoryId))
+      .filter(filterCategory(getActiveCategoryId(this.props.location)))
       .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
       .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
       .filter(searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
@@ -74,7 +82,12 @@ class App extends Component {
   render() {
     const {props, state} = this;
 
-    const activeCategoryName = findById(props.categories, state.activeCategoryId).name;
+    const category = findById(props.categories, getActiveCategoryId(props.location));
+
+    // An active category is required to render.
+    if (!category) {
+      return null;
+    }
 
     return (
       <div>
@@ -88,8 +101,6 @@ class App extends Component {
           <div className="primary-flex">
             <Sidebar
               categories={props.categories}
-              activeCategoryId={state.activeCategoryId}
-              setActiveCategoryId={this.setActiveCategoryId}
               minPrice={state.minPrice}
               setMinPrice={this.setMinPrice}
               maxPrice={state.maxPrice}
@@ -98,7 +109,7 @@ class App extends Component {
 
             <div className="primary-content">
               <ProductGrid
-                title={activeCategoryName}
+                title={category.name}
                 items={this.getVisibleProducts()}
               />
             </div>
@@ -124,7 +135,10 @@ class App extends Component {
 export default function AppContainer(props) {
   return (
     <BrowserRouter>
-      <App {...props} />
+      <Switch>
+        <Route path="/products" render={(routeProps) => <App {...props} {...routeProps} />} />
+        <Redirect to="/products" />
+      </Switch>
     </BrowserRouter>
   )
 }

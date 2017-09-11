@@ -1,6 +1,7 @@
 import React from 'react';
 import './Sidebar.css';
 import {PriceFilter} from './PriceFilter';
+import {AddQueryNavLink} from '../utils/routerUtils';
 
 export const Sidebar = (props) => (
   <div className="Sidebar">
@@ -9,16 +10,14 @@ export const Sidebar = (props) => (
     </div>
     <ul className="Sidebar__links">
       {props.categories.map((category, i) => (
-        <li
-          key={category.id}
-          className={`Sidebar_links__item${props.activeCategoryId === category.id ? ' Sidebar_links__item--active' : ''}`}
-        >
-          <a href="#" onClick={(event) => {
-            props.setActiveCategoryId(category.id);
-            event.preventDefault();
-          }}>
+        <li key={category.id}>
+          <AddQueryNavLink
+            queryParams={{categoryId: category.id}}
+            className="Sidebar_links__item"
+            activeClassName="Sidebar_links__item--active"
+          >
             {category.name}
-          </a>
+          </AddQueryNavLink>
         </li>
       ))}
     </ul>
