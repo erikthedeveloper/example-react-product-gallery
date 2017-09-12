@@ -3,29 +3,21 @@ import PropTypes from 'prop-types';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import qs from 'query-string';
 import './App.css';
-import {findById, noopTrue} from './utils';
+import {findById} from './utils';
 import {Header} from './components/Header';
 import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
 import {addQuery, removeQuery} from './utils/routerUtils';
 import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';
-
-// Various filters for filtering down products
-const filterCategory = (id) => ({categoryId}) =>
-  categoryId === id;
-
-const filterMinPrice = (minPrice) => ({price}) =>
-  price >= minPrice;
-
-const filterMaxPrice = (maxPrice) => ({price}) =>
-  price <= maxPrice;
-
-const filterSearchText = (searchText) => ({name}) =>
-  name.toLowerCase().includes(searchText.toLowerCase());
+import {getCategories, getProducts, productQueryParams} from './requests';
 
 class App extends Component {
   static propTypes = {
+    requestProducts: PropTypes.func.isRequired,
+    requestCategories: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+
     categories: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
@@ -43,15 +35,43 @@ class App extends Component {
     }))
   };
 
+  static defaultProps = {
+    categories: [],
+    products: [],
+  };
+
   componentWillMount() {
     this.ensureActiveCategoryRedirect();
   }
 
+  componentDidMount() {
+    this.props.requestCategories();
+  }
+
   componentDidUpdate(prevProps) {
+    // We can't set a default category id until we have categories! ...there must be a better way?
+    if (prevProps.categories.length === 0 && this.props.categories.length > 0) {
+      this.setState(
+        {activeCategoryId: this.props.categories[0].id},
+        // We can't request products until we have a category! ...there must be a better way?
+        this.requestProducts
+      )
+    }
+
     if (getActiveCategoryId(this.props.location) !== getActiveCategoryId(prevProps.location)) {
       this.setSearchText('');
     }
+
+    // Thanks to location.search being a string and knowing that the params are sorted, we can use string equality.
+    if (prevProps.location.search !== this.props.location.search) {
+      this.requestProducts();
+    }
   }
+
+  requestProducts = () => {
+    const {location} = this.props;
+    this.props.requestProducts(productQueryParams(location));
+  };
 
   ensureActiveCategoryRedirect() {
     const {location, history, categories} = this.props;
@@ -82,21 +102,6 @@ class App extends Component {
     );
   };
 
-  getVisibleProducts() {
-    const {location} = this.props;
-
-    const activeCategoryId = getActiveCategoryId(location);
-    const minPrice = getMinPrice(location);
-    const maxPrice = getMaxPrice(location);
-    const searchText = getSearchText(location);
-
-    return this.props.products
-      .filter(filterCategory(activeCategoryId))
-      .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
-      .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
-      .filter(searchText && searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
-  }
-
   render() {
     const {location, categories, products} = this.props;
 
@@ -126,7 +131,8 @@ class App extends Component {
             <div className="primary-content">
               <ProductGrid
                 title={category.name}
-                items={this.getVisibleProducts()}
+                items={this.props.products}
+                loading={this.props.loading}
               />
             </div>
           </div>
@@ -148,11 +154,45 @@ class App extends Component {
   }
 }
 
-export default function AppContainer(props) {
+class AppContainer extends React.Component {
+  state = {
+    loading: false,
+    products: undefined,
+    categories: undefined,
+  };
+
+  requestProducts = async (...args) => {
+    this.setState({loading: true});
+    const products = await getProducts(...args);
+    this.setState({
+      products,
+      loading: false,
+    })
+  };
+
+  requestCategories = async () => {
+    this.setState({
+      categories: await getCategories(),
+    });
+  };
+
+  render() {
+    const props = {
+      ...this.props,
+      ...this.state,
+      requestProducts: this.requestProducts,
+      requestCategories: this.requestCategories,
+    };
+
+    return <App {...props} />;
+  }
+}
+
+export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/products" render={(routeProps) => <App {...props} {...routeProps} />} />
+        <Route path="/products" render={(routeProps) => <AppContainer {...routeProps} />} />
         <Redirect to="/products" />
       </Switch>
     </BrowserRouter>

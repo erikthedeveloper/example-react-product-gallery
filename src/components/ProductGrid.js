@@ -4,9 +4,11 @@ import {formatDollar} from '../utils';
 import {AddQueryLink} from '../utils/routerUtils';
 
 export const ProductGrid = (props) => (
-  <div className="Grid">
+  <div className="Grid" style={{opacity: props.loading ? '0.7' : '1', transition: 'all 200ms'}}>
     <h1 className="PrimaryHeading">{props.title}</h1>
-    {props.items.length === 0 && <p className="no-results-message">No items found...</p>}
+    {props.items.length === 0 && (
+      <p className="no-results-message">{props.loading ? 'Loading' : 'No items found'}...</p>
+    )}
     {props.items.map(item => (
       <div className="Grid__item" key={item.id}>
         <AddQueryLink queryParams={{itemId: item.id}} className="ProductGridItem">
