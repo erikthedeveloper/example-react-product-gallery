@@ -28,9 +28,8 @@ export const Sidebar = (props) => (
 
     <PriceFilter
       minPrice={props.minPrice}
-      setMinPrice={props.setMinPrice}
       maxPrice={props.maxPrice}
-      setMaxPrice={props.setMaxPrice}
+      setPriceFilters={props.setPriceFilters}
     />
   </div>
 );

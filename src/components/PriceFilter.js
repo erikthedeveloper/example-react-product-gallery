@@ -1,24 +1,37 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import './PriceFilter.css';
+import {toNumber} from '../utils';
 
 export class PriceFilter extends Component {
-  state = {
-    minPrice: this.props.minPrice || null,
-    maxPrice: this.props.maxPrice || null,
+  static propTypes = {
+    minPrice: PropTypes.number,
+    maxPrice: PropTypes.number,
+    setPriceFilters: PropTypes.func.isRequired,
   };
 
-  onInputChange = ({target: {name, value}}) => {
-    if (name === 'minPrice')
-      this.setState({minPrice: value});
+  state = {
+    minPrice: this.props.minPrice,
+    maxPrice: this.props.maxPrice,
+  };
 
-    if (name === 'maxPrice')
-      this.setState({maxPrice: value});
+  componentWillReceiveProps(nextProps) {
+    const {minPrice, maxPrice} = nextProps;
+    if (
+      nextProps.minPrice !== this.props.minPrice ||
+      nextProps.maxPrice !== this.props.maxPrice
+    ) {
+      this.setState({minPrice, maxPrice});
+    }
+  }
+
+  onInputChange = ({target: {name, value}}) => {
+    this.setState({[name]: toNumber(value)});
   };
 
   submit = (event) => {
     event.preventDefault();
-    this.props.setMinPrice(this.state.minPrice);
-    this.props.setMaxPrice(this.state.maxPrice);
+    this.props.setPriceFilters(this.state.minPrice, this.state.maxPrice);
   };
 
   render() {
@@ -29,6 +42,8 @@ export class PriceFilter extends Component {
         <form onSubmit={this.submit}>
           <input
             type="number"
+            step="0.01"
+            min={0}
             name="minPrice"
             className="PriceFilter__input"
             placeholder="$ Min"
@@ -37,6 +52,8 @@ export class PriceFilter extends Component {
           />
           <input
             type="number"
+            step="0.01"
+            min={0}
             name="maxPrice"
             className="PriceFilter__input"
             placeholder="$ Max"
