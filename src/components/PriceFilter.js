@@ -29,9 +29,20 @@ export class PriceFilter extends Component {
     );
   };
 
+  onBlurForm = () => {
+    this.props.setPriceFilters(
+      this.form.minPrice.value,
+      this.form.maxPrice.value
+    );
+  };
+
   render() {
     return (
-      <form onSubmit={this.submit} ref={node => this.form = node}>
+      <form
+        ref={node => this.form = node}
+        onSubmit={this.submit}
+        onBlur={this.onBlurForm}
+      >
         <div className="PriceFilter">
           <NumberInput
             name="minPrice"

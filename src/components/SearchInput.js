@@ -21,7 +21,7 @@ export class SearchInput extends React.Component {
 
   onBlur = () => {
     if (this.form.searchText.value !== this.props.searchText) {
-      this.submit();
+      this.props.setSearchText(this.form.searchText.value);
     }
   };
 
