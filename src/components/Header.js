@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import {SearchInput} from './SearchInput';
 
 export const Header = ({searchText, setSearchText}) => (
   <div className="Header">
@@ -8,17 +9,7 @@ export const Header = ({searchText, setSearchText}) => (
         Amazing<br />
         Store
       </div>
-      <div className="SearchInput">
-        <i className="SearchInput__icon fa fa-search" />
-        <input
-          type="text"
-          className="SearchInput__input"
-          placeholder="Search products by name"
-          value={searchText || ''}
-          onChange={({target: {value}}) => setSearchText(value)}
-        />
-      </div>
-
+      <SearchInput searchText={searchText} setSearchText={setSearchText} />
     </div>
   </div>
 );

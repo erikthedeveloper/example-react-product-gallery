@@ -75,7 +75,7 @@ class App extends Component {
   };
 
   setSearchText = (q) => {
-    this.props.history.replace(
+    this.props.history.push(
       q.trim()
         ? addQuery(this.props.location, {q})
         : removeQuery(this.props.location, 'q')

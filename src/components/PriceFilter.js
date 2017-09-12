@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './PriceFilter.css';
-import {toNumber} from '../utils';
+import {NumberInput} from './NumberInput';
 
 export class PriceFilter extends Component {
   static propTypes = {
@@ -10,61 +10,46 @@ export class PriceFilter extends Component {
     setPriceFilters: PropTypes.func.isRequired,
   };
 
-  state = {
-    minPrice: this.props.minPrice,
-    maxPrice: this.props.maxPrice,
-  };
-
-  componentWillReceiveProps(nextProps) {
-    const {minPrice, maxPrice} = nextProps;
+  componentDidUpdate(prevProps) {
+    const {minPrice, maxPrice} = this.props;
     if (
-      nextProps.minPrice !== this.props.minPrice ||
-      nextProps.maxPrice !== this.props.maxPrice
+      prevProps.minPrice !== minPrice ||
+      prevProps.maxPrice !== maxPrice
     ) {
-      this.setState({minPrice, maxPrice});
+      this.form.minPrice.value = minPrice || '';
+      this.form.maxPrice.value = maxPrice || '';
     }
   }
 
-  onInputChange = ({target: {name, value}}) => {
-    this.setState({[name]: toNumber(value)});
-  };
-
   submit = (event) => {
     event.preventDefault();
-    this.props.setPriceFilters(this.state.minPrice, this.state.maxPrice);
+    this.props.setPriceFilters(
+      this.form.minPrice.value,
+      this.form.maxPrice.value
+    );
   };
 
   render() {
-    const {state} = this;
-
     return (
-      <div className="PriceFilter">
-        <form onSubmit={this.submit}>
-          <input
-            type="number"
-            step="0.01"
-            min={0}
+      <form onSubmit={this.submit} ref={node => this.form = node}>
+        <div className="PriceFilter">
+          <NumberInput
             name="minPrice"
-            className="PriceFilter__input"
+            defaultValue={this.props.minPrice}
             placeholder="$ Min"
-            value={state.minPrice || ''}
-            onChange={this.onInputChange}
-          />
-          <input
-            type="number"
-            step="0.01"
-            min={0}
-            name="maxPrice"
             className="PriceFilter__input"
+          />
+          <NumberInput
+            name="maxPrice"
+            defaultValue={this.props.maxPrice}
             placeholder="$ Max"
-            value={state.maxPrice || ''}
-            onChange={this.onInputChange}
+            className="PriceFilter__input"
           />
           <button className="Button Button--primary" type={this.submit}>
             Go
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     )
   }
 }
