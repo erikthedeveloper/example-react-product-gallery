@@ -14,7 +14,7 @@ export const Header = ({searchText, setSearchText}) => (
           type="text"
           className="SearchInput__input"
           placeholder="Search products by name"
-          value={searchText}
+          value={searchText || ''}
           onChange={({target: {value}}) => setSearchText(value)}
         />
       </div>

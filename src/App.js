@@ -9,7 +9,7 @@ import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
 import {addQuery, removeQuery} from './utils/routerUtils';
-import {getActiveCategoryId, getMaxPrice, getMinPrice} from './utils/routes';
+import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';
 
 // Various filters for filtering down products
 const filterCategory = (id) => ({categoryId}) =>
@@ -43,12 +43,14 @@ class App extends Component {
     }))
   };
 
-  state = {
-    searchText: '',
-  };
-
   componentWillMount() {
     this.ensureActiveCategoryRedirect();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (getActiveCategoryId(this.props.location) !== getActiveCategoryId(prevProps.location)) {
+      this.setSearchText('');
+    }
   }
 
   ensureActiveCategoryRedirect() {
@@ -72,30 +74,33 @@ class App extends Component {
     this.props.history.push(location);
   };
 
-  setSearchText = (searchText) => this.setState({searchText});
+  setSearchText = (q) => {
+    this.props.history.replace(
+      q.trim()
+        ? addQuery(this.props.location, {q})
+        : removeQuery(this.props.location, 'q')
+    );
+  };
 
   getVisibleProducts() {
     const {location} = this.props;
-    const {searchText} = this.state;
 
     const activeCategoryId = getActiveCategoryId(location);
     const minPrice = getMinPrice(location);
     const maxPrice = getMaxPrice(location);
+    const searchText = getSearchText(location);
 
     return this.props.products
       .filter(filterCategory(activeCategoryId))
       .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
       .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
-      .filter(searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
+      .filter(searchText && searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
   }
 
   render() {
     const {location, categories, products} = this.props;
 
     const category = findById(categories, getActiveCategoryId(location));
-    const minPrice = getMinPrice(location);
-    const maxPrice = getMaxPrice(location);
-
     // An active category is required to render.
     if (!category) {
       return null;
@@ -104,7 +109,7 @@ class App extends Component {
     return (
       <div>
         <Header
-          searchText={this.state.searchText}
+          searchText={getSearchText(location)}
           setSearchText={this.setSearchText}
         />
 
@@ -113,8 +118,8 @@ class App extends Component {
           <div className="primary-flex">
             <Sidebar
               categories={categories}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
+              minPrice={getMinPrice(location)}
+              maxPrice={getMaxPrice(location)}
               setPriceFilters={this.setPriceFilters}
             />
 
