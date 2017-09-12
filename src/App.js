@@ -1,27 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
-import {findById, noopTrue} from './utils';
+import {findById} from './utils';
 import {Header} from './components/Header';
 import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
+import {getCategories, getProducts} from './requests';
 
-// Various filters for filtering down products
-const filterCategory = (id) => ({categoryId}) =>
-  categoryId === id;
-
-const filterMinPrice = (minPrice) => ({price}) =>
-  price >= minPrice;
-
-const filterMaxPrice = (maxPrice) => ({price}) =>
-  price <= maxPrice;
-
-const filterSearchText = (searchText) => ({name}) =>
-  name.toLowerCase().includes(searchText.toLowerCase());
-
-export default class App extends Component {
+class App extends Component {
   static propTypes = {
+    requestProducts: PropTypes.func.isRequired,
+    requestCategories: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+
     categories: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
@@ -39,8 +31,13 @@ export default class App extends Component {
     }))
   };
 
+  static defaultProps = {
+    categories: [],
+    products: [],
+  };
+
   state = {
-    activeCategoryId: this.props.categories[0].id,
+    activeCategoryId: null,
 
     minPrice: null,
     maxPrice: null,
@@ -50,12 +47,36 @@ export default class App extends Component {
     viewingItemId: null,
   };
 
-  setActiveCategoryId = (activeCategoryId) => this.setState({activeCategoryId});
+  componentDidMount() {
+    this.props.requestCategories();
+  }
 
-  setMinPrice = (minPrice) => this.setState({minPrice});
-  setMaxPrice = (maxPrice) => this.setState({maxPrice});
+  componentDidUpdate(prevProps) {
+    // We can't set a default category id until we have categories! ...there must be a better way?
+    if (prevProps.categories.length === 0 && this.props.categories.length > 0) {
+      this.setState(
+        {activeCategoryId: this.props.categories[0].id},
+        // We can't request products until we have a category! ...there must be a better way?
+        this.requestProducts
+      )
+    }
+  }
 
-  setSearchText = (searchText) => this.setState({searchText});
+  requestProducts = () => {
+    this.props.requestProducts({
+      activeCategoryId: this.state.activeCategoryId,
+      minPrice: this.state.minPrice,
+      maxPrice: this.state.maxPrice,
+      searchText: this.state.searchText,
+    });
+  };
+
+  setActiveCategoryId = (activeCategoryId) => this.setState({activeCategoryId}, this.requestProducts);
+
+  setMinPrice = (minPrice) => this.setState({minPrice}, this.requestProducts);
+  setMaxPrice = (maxPrice) => this.setState({maxPrice}, this.requestProducts);
+
+  setSearchText = (searchText) => this.setState({searchText}, this.requestProducts);
 
   onClickItem = (viewingItemId) => () => {
     this.setState({viewingItemId});
@@ -63,24 +84,14 @@ export default class App extends Component {
 
   closeProductDetails = () => this.setState({viewingItemId: null});
 
-  getVisibleProducts() {
-    const {
-      activeCategoryId, searchText,
-      minPrice, maxPrice,
-    } = this.state;
-
-    return this.props.products
-      .filter(filterCategory(activeCategoryId))
-      .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
-      .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
-      .filter(searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
-  }
-
   render() {
     const {props, state} = this;
 
     const viewingItem = state.viewingItemId ? findById(props.products, state.viewingItemId) : null;
-    const activeCategoryName = findById(props.categories, state.activeCategoryId).name;
+    const activeCategory = findById(props.categories, state.activeCategoryId);
+    if (!activeCategory) {
+      return null;
+    }
 
     return (
       <div>
@@ -109,8 +120,9 @@ export default class App extends Component {
 
             <div className="primary-content">
               <ProductGrid
-                title={activeCategoryName}
-                items={this.getVisibleProducts()}
+                title={activeCategory.name}
+                items={this.props.products}
+                loading={this.props.loading}
                 onClickItem={this.onClickItem}
               />
             </div>
@@ -118,5 +130,38 @@ export default class App extends Component {
         </div>
       </div>
     );
+  }
+}
+
+export default class AppContainer extends React.Component {
+  state = {
+    loading: false,
+    products: undefined,
+    categories: undefined,
+  };
+
+  requestProducts = async (...args) => {
+    this.setState({loading: true});
+    const products = await getProducts(...args);
+    this.setState({
+      products,
+      loading: false,
+    })
+  };
+
+  requestCategories = async () => {
+    this.setState({
+      categories: await getCategories(),
+    });
+  };
+
+  render() {
+    const props = {
+      ...this.state,
+      requestProducts: this.requestProducts,
+      requestCategories: this.requestCategories,
+    };
+
+    return <App {...props} />;
   }
 }
