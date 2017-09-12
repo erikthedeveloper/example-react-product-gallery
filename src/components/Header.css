@@ -20,6 +20,11 @@
   font-size: 36px;
   font-weight: 900;
   line-height: 33px;
+  text-decoration: none;
+}
+
+.Header__title:hover {
+  color: #F5F5F5;
 }
 
 .SearchInput {
