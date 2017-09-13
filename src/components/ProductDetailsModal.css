@@ -9,7 +9,7 @@
 }
 
 .Modal__x {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   padding: 30px;
@@ -31,7 +31,7 @@
   margin: 0 auto;
   background: #FFF;
   border-radius: 10px;
-  box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.05);
+  box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.10);
 }
 
 .ProductDetails__image {
