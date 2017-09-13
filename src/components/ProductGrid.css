@@ -60,3 +60,8 @@ a.ProductGridItem {
   color: #F8CB00;
   font-size: 20px;
 }
+
+.LoadingSpinner {
+  text-align: center;
+  font-size: 48px;
+}

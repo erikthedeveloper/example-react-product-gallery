@@ -3,11 +3,19 @@ import './ProductGrid.css';
 import {formatDollar} from '../utils';
 import {AddQueryLink} from '../utils/routerUtils';
 
+const LoadingSpinner = () => (
+  <div className="LoadingSpinner">
+    <i className="fa fa-cog fa-spin fa-fw" />
+    <span className="sr-only">Loading...</span>
+  </div>
+);
+
 export const ProductGrid = (props) => (
   <div className="Grid" style={{opacity: props.loading ? '0.7' : '1', transition: 'all 200ms'}}>
     <h1 className="PrimaryHeading">{props.title}</h1>
-    {props.items.length === 0 && (
-      <p className="no-results-message">{props.loading ? 'Loading' : 'No items found'}...</p>
+    {props.items.length === 0 && (props.loading
+      ? <LoadingSpinner />
+      : <p className="no-results-message">No items found...</p>
     )}
     {props.items.map(item => (
       <div className="Grid__item" key={item.id}>
