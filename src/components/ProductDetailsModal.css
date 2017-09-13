@@ -34,6 +34,14 @@
   box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.10);
 }
 
+.ProductDetails__loading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
 .ProductDetails__image {
   float: left;
   width: 390px;
