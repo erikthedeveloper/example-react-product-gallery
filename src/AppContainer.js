@@ -20,14 +20,6 @@ class AppContainer extends Component {
   componentDidUpdate(prevProps) {
     const {location} = this.props;
 
-    // Clear out searchText when changing categories.
-    if (
-      getActiveCategoryId(location) !== getActiveCategoryId(prevProps.location) &&
-      getSearchText(location)
-    ) {
-      this.setSearchText('');
-    }
-
     // Did the relevant query params change? All relevant state is held in URI
     if (qs.stringify(productQueryParams(prevProps.location)) !== qs.stringify(productQueryParams(location))) {
       this.requestProducts();

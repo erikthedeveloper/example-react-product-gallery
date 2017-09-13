@@ -35,7 +35,13 @@ export function AddQueryNavLink({queryParams, ...props}) {
        * Ensure that each of the link params are present on the current location.
        */
       const queryIsActive = () => Object.keys(queryParams)
-        .every(key => Object.hasOwnProperty.call(currentQuery, key) && currentQuery[key] === toQuery[key]);
+        .every(key => (
+          // Enable "omission" of undesired keys
+          typeof toQuery[key] === 'undefined' ||
+          // Ensure every desired key matches
+          Object.hasOwnProperty.call(currentQuery, key) &&
+          currentQuery[key] === toQuery[key]
+        ));
 
       return <NavLink {...props} to={to} isActive={queryIsActive} />;
     }} />
