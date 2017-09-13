@@ -1,5 +1,5 @@
 import * as data from './data';
-import {noopTrue} from './utils';
+import {findById, noopTrue} from './utils';
 import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';;
 
 // Various filters for filtering down products
@@ -44,6 +44,18 @@ export function getProducts({
 
     setTimeout(resolve.bind(null, filteredItems), requestDelay());
   }) ;
+}
+
+/**
+ * "Request" a single product by id.
+ * @param id
+ * @returns {Promise}
+ */
+export function getProduct(id) {
+  return new Promise((resolve) => {
+    const item = findById(data.products, id);
+    setTimeout(resolve.bind(null, item), requestDelay());
+  });
 }
 
 /**

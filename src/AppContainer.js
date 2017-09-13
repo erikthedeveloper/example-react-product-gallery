@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import App from './App';
-import {getActiveCategoryId, getSearchText} from './utils/routes';
+import {getActiveCategoryId, getActiveItemId, getSearchText} from './utils/routes';
 import {addQuery, removeQuery} from './utils/routerUtils';
 import {getCategories, getProducts, productQueryParams} from './requests';
 import qs from 'query-string';
@@ -85,7 +85,7 @@ class AppContainer extends Component {
       setSearchText: this.setSearchText,
     };
 
-    const {location, categories} = props;
+    const {location, categories, products} = props;
 
     if (categories.length > 0) {
       const activeCategoryId = getActiveCategoryId(location);
@@ -97,6 +97,11 @@ class AppContainer extends Component {
         )) {
         return <Redirect to={addQuery(location, {categoryId: categories[0].id})} />;
       }
+    }
+
+    const activeItemId = getActiveItemId(location);
+    if (activeItemId && !products.some(({id}) => id === activeItemId)) {
+      return <p>Whoops! Maybe don't navigate directly to a product right now :)... (wait for it)</p>
     }
 
     return <App {...props} />;

@@ -4,6 +4,9 @@ import {toNumber} from '../utils';
 export const getActiveCategoryId = location =>
   toNumber(qs.parse(location.search).categoryId);
 
+export const getActiveItemId = location =>
+  toNumber(qs.parse(location.search).itemId);
+
 export const getMinPrice = location =>
   toNumber(qs.parse(location.search).minPrice);
 
