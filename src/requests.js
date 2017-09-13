@@ -1,8 +1,6 @@
 import * as data from './data';
 import {noopTrue} from './utils';
-import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';
-
-const REQUEST_DELAY = 750;
+import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';;
 
 // Various filters for filtering down products
 const filterCategory = (id) => ({categoryId}) =>
@@ -16,6 +14,12 @@ const filterMaxPrice = (maxPrice) => ({price}) =>
 
 const filterSearchText = (searchText) => ({name}) =>
   name.toLowerCase().includes(searchText.toLowerCase());
+
+/**
+ * Semi-random delay MS for "requests".
+ * @return Number
+ */
+const requestDelay = () => Math.max(250, Math.ceil(Math.random() * 1500));
 
 /**
  * "Request" products given query params
@@ -38,7 +42,7 @@ export function getProducts({
       .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
       .filter(searchText && searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
 
-    setTimeout(resolve.bind(null, filteredItems), REQUEST_DELAY);
+    setTimeout(resolve.bind(null, filteredItems), requestDelay());
   }) ;
 }
 
@@ -62,7 +66,7 @@ export function productQueryParams(location) {
  */
 export function getCategories() {
   return new Promise((resolve) => {
-    setTimeout(resolve.bind(null, data.categories), REQUEST_DELAY);
+    setTimeout(resolve.bind(null, data.categories), requestDelay());
   }) ;
 }
 
