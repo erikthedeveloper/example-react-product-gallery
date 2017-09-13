@@ -1,0 +1,8 @@
+.LoadingSpinner {
+  text-align: center;
+  font-size: 48px;
+}
+
+.LoadingSpinner--large {
+  font-size: 72px;
+}

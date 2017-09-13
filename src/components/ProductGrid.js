@@ -2,13 +2,7 @@ import React from 'react';
 import './ProductGrid.css';
 import {formatDollar} from '../utils';
 import {AddQueryLink} from '../utils/routerUtils';
-
-const LoadingSpinner = () => (
-  <div className="LoadingSpinner">
-    <i className="fa fa-cog fa-spin fa-fw" />
-    <span className="sr-only">Loading...</span>
-  </div>
-);
+import {LoadingSpinner} from './LoadingSpinner';
 
 export const ProductGrid = (props) => (
   <div className="Grid" style={{opacity: props.loading ? '0.7' : '1', transition: 'all 200ms'}}>
