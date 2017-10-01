@@ -1,3 +1,7 @@
+_NOTE: To any who stumble onto this, this is sandbox project that I've been using to experiment with various Javascript and React-related goodies.
+It may or may not be live to play with in its current state at https://react-product-gallery.herokuapp.com/.
+This README reflects the initial state of this example project repo._
+
 # React Product Gallery
 
 For this demo project, you will build a product gallery using React. The finished product should look visually similar to that of the provided mock ups as well as satisfy the requirements described the in the specs below. 
@@ -14,12 +18,12 @@ The project boilerplate is based around [create-react-app](https://github.com/fa
  which means you don't have to worry about setting up any dependencies, build steps, boilerplate, etc...
  For additional information/instructions specific to `create-react-app` see https://github.com/facebookincubator/create-react-app#create-react-app-
 
-- Clone this repo via `git clone git@github.com:practicegenius/react-product-gallery.git`
-- `cd react-product-gallery` and install dependencies via `yarn install`
+- Clone this repo
+- `cd example-react-product-gallery` and install dependencies via `yarn install`
 - Execute `yarn start` to begin the development server.
 - You should be able to reach the project at http://localhost:3000/
 
-_*[`yarn`](https://yarnpkg.com) is intercchangeable with [`npm`](https://www.npmjs.com/) throughout these instructions_
+_*[`yarn`](https://yarnpkg.com) is interchangeable with [`npm`](https://www.npmjs.com/) throughout these instructions_
 
 ### Screen 01: Product Listing
 
