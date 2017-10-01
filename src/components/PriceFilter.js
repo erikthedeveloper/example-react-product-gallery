@@ -13,6 +13,15 @@ const PriceInput = styled(NumberInput)`
   font-size: 14px;
 `;
 
+const Button = styled.button`
+  height: 34px;
+  width: 91px;
+  border-radius: 5px;
+  background-color: #F8CB00;
+  border: none;
+  cursor: pointer;
+`;
+
 export class PriceFilter extends Component {
   static propTypes = {
     minPrice: PropTypes.number,
@@ -64,9 +73,9 @@ export class PriceFilter extends Component {
             defaultValue={this.props.maxPrice}
             placeholder="$ Max"
           />
-          <button className="Button Button--primary" type={this.submit}>
+          <Button>
             Go
-          </button>
+          </Button>
         </div>
       </form>
     )
