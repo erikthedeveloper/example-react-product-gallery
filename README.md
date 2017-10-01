@@ -29,7 +29,7 @@ _*[`yarn`](https://yarnpkg.com) is interchangeable with [`npm`](https://www.npmj
 
 _This screen displays a listing of products along with various search and filter controls._
 
-![Screen: Gallery](prototype/Screen Gallery.png)
+![Screen: Gallery](prototype/Screen%20Gallery.png)
 
 **Display Products**
 
@@ -53,7 +53,7 @@ Filter products by min price and max price. Both fields being optional.
 
 _This screen displays more detailed information about a single product._
 
-![Screen: Product Details](prototype/Screen Product Details.png)
+![Screen: Product Details](prototype/Screen%20Product%20Details.png)
 
 **Modal**
 
