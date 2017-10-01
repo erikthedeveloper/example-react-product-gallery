@@ -1,36 +1,72 @@
 import React from 'react';
-import './Sidebar.css';
+import styled from 'styled-components';
 import {PriceFilter} from './PriceFilter';
 import {AddQueryNavLink} from '../utils/routerUtils';
 
+const Wrapper = styled.div`
+  width: 290px;
+  float: left;
+`;
+
+const Links = styled.div`
+  list-style: none;
+  font-size: 15px;
+  padding: 0;
+`;
+
+const activeLinkClass = 'LinkItem--active';
+const LinkItem = styled(AddQueryNavLink).attrs({
+  activeClassName: activeLinkClass,
+})`
+  padding: 8px 0;
+
+  &, & a {
+    display: inline-block;
+    color: #818181;
+    text-decoration: none;
+  }
+
+  &.${activeLinkClass} {
+    color: #F8CB00;
+  }
+`;
+
+const SidebarHeading = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 15px;
+
+  &:nth-child(n + 2) {
+    margin-top: 30px;
+  }
+`;
+
 export const Sidebar = (props) => (
-  <div className="Sidebar">
-    <div className="Sidebar__heading">
+  <Wrapper>
+    <SidebarHeading>
       All Categories
-    </div>
-    <ul className="Sidebar__links">
+    </SidebarHeading>
+    <Links>
       {props.categories.map((category, i) => (
         <li key={category.id}>
-          <AddQueryNavLink
+          <LinkItem
             // Clear out searchText when changing categories.
             queryParams={{categoryId: category.id, q: undefined}}
-            className="Sidebar_links__item"
-            activeClassName="Sidebar_links__item--active"
           >
             {category.name}
-          </AddQueryNavLink>
+          </LinkItem>
         </li>
       ))}
-    </ul>
+    </Links>
 
-    <div className="Sidebar__heading">
+    <SidebarHeading>
       Filter By Price
-    </div>
+    </SidebarHeading>
 
     <PriceFilter
       minPrice={props.minPrice}
       maxPrice={props.maxPrice}
       setPriceFilters={props.setPriceFilters}
     />
-  </div>
+  </Wrapper>
 );
