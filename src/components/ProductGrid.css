@@ -33,6 +33,13 @@
   transition: 150ms;
 }
 
+/* Since we know this is a link */
+a.ProductGridItem {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .ProductGridItem:hover {
   box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.10);
   border: 2px solid #f8cb00;

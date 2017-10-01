@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {Route} from 'react-router-dom';
+import qs from 'query-string';
 import './App.css';
-import {findById, noopTrue} from './utils';
+import {findById} from './utils';
 import {Header} from './components/Header';
 import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
-
-// Various filters for filtering down products
-const filterCategory = (id) => ({categoryId}) =>
-  categoryId === id;
-
-const filterMinPrice = (minPrice) => ({price}) =>
-  price >= minPrice;
-
-const filterMaxPrice = (maxPrice) => ({price}) =>
-  price <= maxPrice;
-
-const filterSearchText = (searchText) => ({name}) =>
-  name.toLowerCase().includes(searchText.toLowerCase());
+import {removeQuery} from './utils/routerUtils';
+import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';
 
 export default class App extends Component {
   static propTypes = {
+    loading: PropTypes.bool.isRequired,
+
+    setPriceFilters: PropTypes.func.isRequired,
+    setSearchText: PropTypes.func.isRequired,
+
     categories: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-    })),
+    })).isRequired,
 
     products: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -36,86 +32,56 @@ export default class App extends Component {
         large: PropTypes.string.isRequired,
       }),
       categoryId: PropTypes.number.isRequired,
-    }))
+    })).isRequired,
   };
-
-  state = {
-    activeCategoryId: this.props.categories[0].id,
-
-    minPrice: null,
-    maxPrice: null,
-
-    searchText: '',
-
-    viewingItemId: null,
-  };
-
-  setActiveCategoryId = (activeCategoryId) => this.setState({activeCategoryId});
-
-  setMinPrice = (minPrice) => this.setState({minPrice});
-  setMaxPrice = (maxPrice) => this.setState({maxPrice});
-
-  setSearchText = (searchText) => this.setState({searchText});
-
-  onClickItem = (viewingItemId) => () => {
-    this.setState({viewingItemId});
-  };
-
-  closeProductDetails = () => this.setState({viewingItemId: null});
-
-  getVisibleProducts() {
-    const {
-      activeCategoryId, searchText,
-      minPrice, maxPrice,
-    } = this.state;
-
-    return this.props.products
-      .filter(filterCategory(activeCategoryId))
-      .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
-      .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
-      .filter(searchText.length > 0 ? filterSearchText(searchText) : noopTrue);
-  }
 
   render() {
-    const {props, state} = this;
+    const {
+      location, loading,
+      categories, products,
+      setSearchText, setPriceFilters,
+    } = this.props;
 
-    const viewingItem = state.viewingItemId ? findById(props.products, state.viewingItemId) : null;
-    const activeCategoryName = findById(props.categories, state.activeCategoryId).name;
+    const category = findById(categories, getActiveCategoryId(location));
 
     return (
       <div>
         <Header
-          searchText={state.searchText}
-          setSearchText={this.setSearchText}
+          searchText={getSearchText(location)}
+          setSearchText={setSearchText}
         />
 
         <div className="content">
-          <ProductDetailsModal
-            isOpen={Boolean(viewingItem)}
-            close={this.closeProductDetails}
-            item={viewingItem}
-          />
 
           <div className="primary-flex">
             <Sidebar
-              categories={props.categories}
-              activeCategoryId={state.activeCategoryId}
-              setActiveCategoryId={this.setActiveCategoryId}
-              minPrice={state.minPrice}
-              setMinPrice={this.setMinPrice}
-              maxPrice={state.maxPrice}
-              setMaxPrice={this.setMaxPrice}
+              categories={categories}
+              minPrice={getMinPrice(location)}
+              maxPrice={getMaxPrice(location)}
+              setPriceFilters={setPriceFilters}
             />
 
             <div className="primary-content">
               <ProductGrid
-                title={activeCategoryName}
-                items={this.getVisibleProducts()}
-                onClickItem={this.onClickItem}
+                title={(category && category.name) || ''}
+                items={products}
+                loading={!category || loading}
               />
             </div>
           </div>
         </div>
+
+        <Route path="/products" render={({location, history}) => {
+          const {itemId} = qs.parse(location.search);
+          return (
+            <ProductDetailsModal
+              isOpen={Boolean(itemId)}
+              close={() => history.push(removeQuery(location, 'itemId'))}
+              item={findById(products, Number(itemId))}
+            />
+          );
+        }} />
+
       </div>
     );
   }

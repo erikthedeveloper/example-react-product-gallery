@@ -1,24 +1,16 @@
 import React from 'react';
 import './Header.css';
+import {SearchInput} from './SearchInput';
+import {Link} from 'react-router-dom';
 
 export const Header = ({searchText, setSearchText}) => (
   <div className="Header">
     <div className="content header-flex">
-      <div className="Header__title">
-        Amazing<br />
-        Store
-      </div>
-      <div className="SearchInput">
-        <i className="SearchInput__icon fa fa-search" />
-        <input
-          type="text"
-          className="SearchInput__input"
-          placeholder="Search products by name"
-          value={searchText}
-          onChange={({target: {value}}) => setSearchText(value)}
-        />
-      </div>
-
+      <Link to="/" className="Header__title">
+        Robots<br />
+        &amp; Kittens
+      </Link>
+      <SearchInput searchText={searchText} setSearchText={setSearchText} />
     </div>
   </div>
 );
