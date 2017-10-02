@@ -1,7 +1,18 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './PriceFilter.css';
+import styled from 'styled-components';
 import {NumberInput} from './NumberInput';
+import {Button} from './Button';
+
+const PriceInput = styled(NumberInput)`
+  height: 30px;
+  width: 59px;
+  margin-right: 10px;
+  border: 1px solid #B8B8B8;
+  border-radius: 2px;
+  text-indent: 8px;
+  font-size: 14px;
+`;
 
 export class PriceFilter extends Component {
   static propTypes = {
@@ -43,23 +54,19 @@ export class PriceFilter extends Component {
         onSubmit={this.submit}
         onBlur={this.onBlurForm}
       >
-        <div className="PriceFilter">
-          <NumberInput
-            name="minPrice"
-            defaultValue={this.props.minPrice}
-            placeholder="$ Min"
-            className="PriceFilter__input"
-          />
-          <NumberInput
-            name="maxPrice"
-            defaultValue={this.props.maxPrice}
-            placeholder="$ Max"
-            className="PriceFilter__input"
-          />
-          <button className="Button Button--primary" type={this.submit}>
-            Go
-          </button>
-        </div>
+        <PriceInput
+          name="minPrice"
+          defaultValue={this.props.minPrice}
+          placeholder="$ Min"
+        />
+        <PriceInput
+          name="maxPrice"
+          defaultValue={this.props.maxPrice}
+          placeholder="$ Max"
+        />
+        <Button>
+          Go
+        </Button>
       </form>
     )
   }

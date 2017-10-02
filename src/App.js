@@ -10,6 +10,7 @@ import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
 import {removeQuery} from './utils/routerUtils';
 import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';
+import {PrimaryContent, PrimaryFlex, Row} from './components/layout';
 
 export default class App extends Component {
   static propTypes = {
@@ -51,9 +52,9 @@ export default class App extends Component {
           setSearchText={setSearchText}
         />
 
-        <div className="content">
+        <Row>
 
-          <div className="primary-flex">
+          <PrimaryFlex>
             <Sidebar
               categories={categories}
               minPrice={getMinPrice(location)}
@@ -61,15 +62,15 @@ export default class App extends Component {
               setPriceFilters={setPriceFilters}
             />
 
-            <div className="primary-content">
+            <PrimaryContent>
               <ProductGrid
                 title={(category && category.name) || ''}
                 items={products}
                 loading={!category || loading}
               />
-            </div>
-          </div>
-        </div>
+            </PrimaryContent>
+          </PrimaryFlex>
+        </Row>
 
         <Route path="/products" render={({location, history}) => {
           const {itemId} = qs.parse(location.search);

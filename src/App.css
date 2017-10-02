@@ -6,28 +6,3 @@ html, body {
 body {
   font-family: "Source Sans Pro", serif;
 }
-
-.content {
-  box-sizing: content-box;
-  width: 1152px;
-  padding: 0 15px;
-  margin: 0 auto;
-}
-
-.primary-flex {
-  display: flex;
-  min-height: 100%;
-}
-
-.primary-content {
-  flex: 1;
-}
-
-.Button {
-  height: 34px;
-  width: 91px;
-  border-radius: 5px;
-  background-color: #F8CB00;
-  border: none;
-  cursor: pointer;
-}
