@@ -6,19 +6,3 @@ html, body {
 body {
   font-family: "Source Sans Pro", serif;
 }
-
-.content {
-  box-sizing: content-box;
-  width: 1152px;
-  padding: 0 15px;
-  margin: 0 auto;
-}
-
-.primary-flex {
-  display: flex;
-  min-height: 100%;
-}
-
-.primary-content {
-  flex: 1;
-}
