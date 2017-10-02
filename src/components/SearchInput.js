@@ -14,7 +14,9 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const SearchIcon = styled.i`
+const SearchIcon = styled.i.attrs({
+  className: 'fa fa-search',
+})`
   color: #5C5C5C;
   width: 25px;
   padding: 10px;
@@ -60,7 +62,7 @@ export class SearchInput extends React.Component {
     return (
       <form onSubmit={this.submit} ref={node => this.form = node}>
         <Wrapper>
-          <SearchIcon className="fa fa-search" />
+          <SearchIcon />
           <BigTextInput
             name="searchText"
             placeholder="Search products by name"

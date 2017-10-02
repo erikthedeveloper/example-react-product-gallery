@@ -13,7 +13,9 @@ const Modal = styled.div`
   z-index: 10;
 `;
 
-const ModalX = styled.div`
+const ModalX = styled.div.attrs({
+  className: 'fa fa-times',
+})`
   position: fixed;
   top: 0;
   right: 0;
@@ -76,7 +78,7 @@ export const ProductDetailsModal = ({isOpen, close, item}) => {
   return !isOpen ? null : (
     <Modal onClick={close}>
       <ModalContents onClick={stopPropagation}>
-        <ModalX className="fa fa-times" onClick={close} />
+        <ModalX onClick={close} />
 
         {!item ? (
           <ModalSpinner>

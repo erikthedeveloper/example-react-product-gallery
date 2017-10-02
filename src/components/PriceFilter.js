@@ -62,21 +62,19 @@ export class PriceFilter extends Component {
         onSubmit={this.submit}
         onBlur={this.onBlurForm}
       >
-        <div className="PriceFilter">
-          <PriceInput
-            name="minPrice"
-            defaultValue={this.props.minPrice}
-            placeholder="$ Min"
-          />
-          <PriceInput
-            name="maxPrice"
-            defaultValue={this.props.maxPrice}
-            placeholder="$ Max"
-          />
-          <Button>
-            Go
-          </Button>
-        </div>
+        <PriceInput
+          name="minPrice"
+          defaultValue={this.props.minPrice}
+          placeholder="$ Min"
+        />
+        <PriceInput
+          name="maxPrice"
+          defaultValue={this.props.maxPrice}
+          placeholder="$ Max"
+        />
+        <Button>
+          Go
+        </Button>
       </form>
     )
   }
