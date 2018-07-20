@@ -21,7 +21,10 @@ class AppContainer extends Component {
     const {location} = this.props;
 
     // Did the relevant query params change? All relevant state is held in URI
-    if (qs.stringify(productQueryParams(prevProps.location)) !== qs.stringify(productQueryParams(location))) {
+    if (
+      qs.stringify(productQueryParams(prevProps.location)) !==
+      qs.stringify(productQueryParams(location))
+    ) {
       this.requestProducts();
     }
   }
@@ -36,7 +39,7 @@ class AppContainer extends Component {
     this.setState({
       products: await getProducts(productQueryParams(this.props.location)),
       loading: false,
-    })
+    });
   };
 
   requestCategories = async () => {
@@ -61,7 +64,7 @@ class AppContainer extends Component {
     this.props.history.push(location);
   };
 
-  setSearchText = (q) => {
+  setSearchText = q => {
     this.props.history.push(
       q.trim()
         ? addQuery(this.props.location, {q})
@@ -81,13 +84,17 @@ class AppContainer extends Component {
 
     if (categories.length > 0) {
       const activeCategoryId = getActiveCategoryId(location);
-      if (!(
-          // No category selected.
+      if (
+        !// No category selected.
+        (
           activeCategoryId ||
           // Attempting to visit invalid category.
           categories.some(({id}) => id === activeCategoryId)
-        )) {
-        return <Redirect to={addQuery(location, {categoryId: categories[0].id})} />;
+        )
+      ) {
+        return (
+          <Redirect to={addQuery(location, {categoryId: categories[0].id})} />
+        );
       }
     }
 
@@ -99,9 +106,12 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/products" render={(routeProps) => <AppContainer {...routeProps} />} />
+        <Route
+          path="/products"
+          render={routeProps => <AppContainer {...routeProps} />}
+        />
         <Redirect to="/products" />
       </Switch>
     </BrowserRouter>
-  )
+  );
 }

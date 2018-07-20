@@ -1,4 +1,6 @@
-export const stopPropagation = (event) => {event.stopPropagation()};
+export const stopPropagation = event => {
+  event.stopPropagation();
+};
 export const formatDollar = float => `$${parseFloat(float).toFixed(2)}`;
 export const noopTrue = () => true;
 

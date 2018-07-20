@@ -20,14 +20,15 @@ const LinkItem = styled(AddQueryNavLink).attrs({
 })`
   padding: 8px 0;
 
-  &, & a {
+  &,
+  & a {
     display: inline-block;
     color: #818181;
     text-decoration: none;
   }
 
   &.${activeLinkClass} {
-    color: #F8CB00;
+    color: #f8cb00;
   }
 `;
 
@@ -41,11 +42,9 @@ const SidebarHeading = styled.div`
   }
 `;
 
-export const Sidebar = (props) => (
+export const Sidebar = props => (
   <Wrapper>
-    <SidebarHeading>
-      All Categories
-    </SidebarHeading>
+    <SidebarHeading>All Categories</SidebarHeading>
     <Links>
       {props.categories.map((category, i) => (
         <li key={category.id}>
@@ -59,9 +58,7 @@ export const Sidebar = (props) => (
       ))}
     </Links>
 
-    <SidebarHeading>
-      Filter By Price
-    </SidebarHeading>
+    <SidebarHeading>Filter By Price</SidebarHeading>
 
     <PriceFilter
       minPrice={props.minPrice}

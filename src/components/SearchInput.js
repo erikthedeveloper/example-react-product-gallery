@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   width: 625px;
   height: 50px;
   border-radius: 5px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   font-size: 24px;
 
   display: flex;
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 const SearchIcon = styled.i.attrs({
   className: 'fa fa-search',
 })`
-  color: #5C5C5C;
+  color: #5c5c5c;
   width: 25px;
   padding: 10px;
 `;
@@ -27,7 +27,7 @@ const BigTextInput = styled.input.attrs({
 })`
   flex: 1;
   width: 200px;
-  color: rgba(123,123,123,0.78);
+  color: rgba(123, 123, 123, 0.78);
   font-size: 15px;
   float: left;
   border: none;
@@ -47,7 +47,7 @@ export class SearchInput extends React.Component {
     }
   }
 
-  submit = (event) => {
+  submit = event => {
     event.preventDefault();
     this.props.setSearchText(this.form.searchText.value);
   };
@@ -60,7 +60,7 @@ export class SearchInput extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.submit} ref={node => this.form = node}>
+      <form onSubmit={this.submit} ref={node => (this.form = node)}>
         <Wrapper>
           <SearchIcon />
           <BigTextInput
@@ -71,6 +71,6 @@ export class SearchInput extends React.Component {
           />
         </Wrapper>
       </form>
-    )
+    );
   }
 }

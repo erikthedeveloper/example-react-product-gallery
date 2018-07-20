@@ -8,9 +8,11 @@ const Wrapper = styled.div`
   opacity: 1;
   transition: all 200ms;
 
-  ${props => props.loading && css`
-    opacity: 0.7;
-  `}
+  ${props =>
+    props.loading &&
+    css`
+      opacity: 0.7;
+    `};
 `;
 
 const PrimaryHeading = styled.h1`
@@ -42,20 +44,21 @@ const ProductGridItem = styled(AddQueryLink)`
   text-align: center;
   height: 300px;
   width: 180px;
-  border: 2px solid #E4E4E4;
+  border: 2px solid #e4e4e4;
   border-radius: 4px;
   box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.05);
   transition: 150ms;
 
   /* Since we know this is a link */
-  &, &.a {
+  &,
+  &.a {
     display: block;
     text-decoration: none;
     color: inherit;
   }
 
-  &:hover { 
-    box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.10);
+  &:hover {
+    box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.1);
     border: 2px solid #f8cb00;
   }
 `;
@@ -72,31 +75,25 @@ const ItemName = styled.div`
 `;
 
 const ItemPrice = styled.div`
-  color: #F8CB00;
+  color: #f8cb00;
   font-size: 20px;
 `;
 
-
-export const ProductGrid = (props) => (
+export const ProductGrid = props => (
   <Wrapper loading={props.loading}>
     <PrimaryHeading>{props.title}</PrimaryHeading>
-    {props.items.length === 0 && (props.loading
-      ? <LoadingSpinner />
-      : <BigText>No items found...</BigText>
-    )}
+    {props.items.length === 0 &&
+      (props.loading ? (
+        <LoadingSpinner />
+      ) : (
+        <BigText>No items found...</BigText>
+      ))}
     {props.items.map(item => (
       <GridItem key={item.id}>
         <ProductGridItem queryParams={{itemId: item.id}}>
-          <ItemImage
-            src={item.images.medium}
-            alt={item.name}
-          />
-          <ItemName>
-            {item.name}
-          </ItemName>
-          <ItemPrice>
-            {formatDollar(item.price)}
-          </ItemPrice>
+          <ItemImage src={item.images.medium} alt={item.name} />
+          <ItemName>{item.name}</ItemName>
+          <ItemPrice>{formatDollar(item.price)}</ItemPrice>
         </ProductGridItem>
       </GridItem>
     ))}

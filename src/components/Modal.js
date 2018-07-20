@@ -8,7 +8,7 @@ const ModalWrapper = styled.div`
   width: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.86);
+  background-color: rgba(255, 255, 255, 0.86);
   z-index: 10;
 `;
 
@@ -35,9 +35,9 @@ const ModalContents = styled.div`
   padding: 100px 60px;
   width: 850px;
   margin: 0 auto;
-  background: #FFF;
+  background: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.10);
+  box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.1);
 `;
 
 export function Modal(props) {

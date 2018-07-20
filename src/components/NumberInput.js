@@ -9,5 +9,5 @@ export function NumberInput(props) {
       type="number"
       defaultValue={props.defaultValue || ''}
     />
-  )
+  );
 }

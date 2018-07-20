@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Route} from 'react-router-dom';
 import qs from 'query-string';
@@ -9,7 +9,12 @@ import {ProductGrid} from './components/ProductGrid';
 import {Sidebar} from './components/Sidebar';
 import {ProductDetailsModal} from './components/ProductDetailsModal';
 import {removeQuery} from './utils/routerUtils';
-import {getActiveCategoryId, getMaxPrice, getMinPrice, getSearchText} from './utils/routes';
+import {
+  getActiveCategoryId,
+  getMaxPrice,
+  getMinPrice,
+  getSearchText,
+} from './utils/routes';
 import {PrimaryContent, PrimaryFlex, Row} from './components/layout';
 
 export default class App extends Component {
@@ -19,28 +24,35 @@ export default class App extends Component {
     setPriceFilters: PropTypes.func.isRequired,
     setSearchText: PropTypes.func.isRequired,
 
-    categories: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })).isRequired,
+    categories: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ).isRequired,
 
-    products: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      images: PropTypes.shape({
-        medium: PropTypes.string.isRequired,
-        large: PropTypes.string.isRequired,
-      }),
-      categoryId: PropTypes.number.isRequired,
-    })).isRequired,
+    products: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        images: PropTypes.shape({
+          medium: PropTypes.string.isRequired,
+          large: PropTypes.string.isRequired,
+        }),
+        categoryId: PropTypes.number.isRequired,
+      })
+    ).isRequired,
   };
 
   render() {
     const {
-      location, loading,
-      categories, products,
-      setSearchText, setPriceFilters,
+      location,
+      loading,
+      categories,
+      products,
+      setSearchText,
+      setPriceFilters,
     } = this.props;
 
     const category = findById(categories, getActiveCategoryId(location));
@@ -53,7 +65,6 @@ export default class App extends Component {
         />
 
         <Row>
-
           <PrimaryFlex>
             <Sidebar
               categories={categories}
@@ -72,17 +83,19 @@ export default class App extends Component {
           </PrimaryFlex>
         </Row>
 
-        <Route path="/products" render={({location, history}) => {
-          const {itemId} = qs.parse(location.search);
-          return (
-            <ProductDetailsModal
-              isOpen={Boolean(itemId)}
-              close={() => history.push(removeQuery(location, 'itemId'))}
-              item={findById(products, Number(itemId))}
-            />
-          );
-        }} />
-
+        <Route
+          path="/products"
+          render={({location, history}) => {
+            const {itemId} = qs.parse(location.search);
+            return (
+              <ProductDetailsModal
+                isOpen={Boolean(itemId)}
+                close={() => history.push(removeQuery(location, 'itemId'))}
+                item={findById(products, Number(itemId))}
+              />
+            );
+          }}
+        />
       </div>
     );
   }

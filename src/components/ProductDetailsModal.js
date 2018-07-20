@@ -28,7 +28,7 @@ const ItemPrice = styled.div`
   font-size: 28px;
   padding-bottom: 20px;
   font-weight: 700;
-  color: #F8CB00;
+  color: #f8cb00;
 `;
 
 const ItemDescription = styled.p`
@@ -46,19 +46,10 @@ export const ProductDetailsModal = ({isOpen, close, item}) => {
         </ModalSpinner>
       ) : (
         <div>
-          <ItemImage
-            src={item.images.large}
-            alt={item.name}
-          />
-          <ItemName>
-            {item.name}
-          </ItemName>
-          <ItemPrice>
-            {formatDollar(item.price)}
-          </ItemPrice>
-          <ItemDescription>
-            {item.description}
-          </ItemDescription>
+          <ItemImage src={item.images.large} alt={item.name} />
+          <ItemName>{item.name}</ItemName>
+          <ItemPrice>{formatDollar(item.price)}</ItemPrice>
+          <ItemDescription>{item.description}</ItemDescription>
         </div>
       )}
     </Modal>

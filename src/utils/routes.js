@@ -13,5 +13,4 @@ export const getMinPrice = location =>
 export const getMaxPrice = location =>
   toNumber(qs.parse(location.search).maxPrice);
 
-export const getSearchText = location =>
-  qs.parse(location.search).q;
+export const getSearchText = location => qs.parse(location.search).q;
