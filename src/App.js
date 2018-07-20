@@ -81,26 +81,31 @@ class App extends Component {
       setSearchText: this.setSearchText,
     };
 
-    const {location, categories, products} = props;
-
-    if (categories.length > 0) {
-      const activeCategoryId = getActiveCategoryId(location);
-      if (
-        !// No category selected.
-        (
-          activeCategoryId ||
-          // Attempting to visit invalid category.
-          categories.some(({id}) => id === activeCategoryId)
-        )
-      ) {
-        return (
-          <Redirect to={addQuery(location, {categoryId: categories[0].id})} />
-        );
-      }
-    }
-
-    return <AppLayout {...props} />;
+    return (
+      <div>
+        <EnsureCategoryRedirect {...props} />
+        <AppLayout {...props} />
+      </div>
+    );
   }
+}
+
+/**
+ * Append categoryId to the location if necessary via Redirect
+ */
+function EnsureCategoryRedirect({categories, location}) {
+  const locationCategoryId = getActiveCategoryId(location);
+  const shouldRedirect =
+    // categories are loaded AND
+    categories.length > 0 &&
+    // No category selected OR
+    (!locationCategoryId ||
+      // Attempting to visit invalid category.
+      !categories.some(({id}) => id === locationCategoryId));
+
+  return shouldRedirect ? (
+    <Redirect to={addQuery(location, {categoryId: categories[0].id})} />
+  ) : null;
 }
 
 export default function Routes() {
