@@ -1,102 +1,118 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Route} from 'react-router-dom';
-import qs from 'query-string';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
-import {findById} from './utils';
-import {Header} from './components/Header';
-import {ProductGrid} from './components/ProductGrid';
-import {Sidebar} from './components/Sidebar';
-import {ProductDetailsModal} from './components/ProductDetailsModal';
-import {removeQuery} from './utils/routerUtils';
-import {
-  getActiveCategoryId,
-  getMaxPrice,
-  getMinPrice,
-  getSearchText,
-} from './utils/routes';
-import {PrimaryContent, PrimaryFlex, Row} from './components/layout';
+import {AppLayout} from './components/AppLayout';
+import {getActiveCategoryId} from './utils/routes';
+import {addQuery, removeQuery} from './utils/routerUtils';
+import {getCategories, getProducts, productQueryParams} from './requests';
+import qs from 'query-string';
 
-export default class App extends Component {
-  static propTypes = {
-    loading: PropTypes.bool.isRequired,
+class App extends Component {
+  state = {
+    loading: false,
+    products: [],
+    categories: [],
+  };
 
-    setPriceFilters: PropTypes.func.isRequired,
-    setSearchText: PropTypes.func.isRequired,
+  componentDidMount() {
+    this.initialRequest();
+  }
 
-    categories: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-      })
-    ).isRequired,
+  componentDidUpdate(prevProps) {
+    const {location} = this.props;
 
-    products: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        images: PropTypes.shape({
-          medium: PropTypes.string.isRequired,
-          large: PropTypes.string.isRequired,
-        }),
-        categoryId: PropTypes.number.isRequired,
-      })
-    ).isRequired,
+    // Did the relevant query params change? All relevant state is held in URI
+    if (
+      qs.stringify(productQueryParams(prevProps.location)) !==
+      qs.stringify(productQueryParams(location))
+    ) {
+      this.requestProducts();
+    }
+  }
+
+  initialRequest = async () => {
+    await this.requestCategories();
+    this.requestProducts();
+  };
+
+  requestProducts = async () => {
+    this.setState({loading: true});
+    this.setState({
+      products: await getProducts(productQueryParams(this.props.location)),
+      loading: false,
+    });
+  };
+
+  requestCategories = async () => {
+    this.setState({loading: true});
+    this.setState({
+      categories: await getCategories(),
+      loading: false,
+    });
+  };
+
+  setPriceFilters = (minPrice, maxPrice) => {
+    let {location} = this.props;
+
+    location = minPrice
+      ? addQuery(location, {minPrice})
+      : removeQuery(location, 'minPrice');
+
+    location = maxPrice
+      ? addQuery(location, {maxPrice})
+      : removeQuery(location, 'maxPrice');
+
+    this.props.history.push(location);
+  };
+
+  setSearchText = q => {
+    this.props.history.push(
+      q.trim()
+        ? addQuery(this.props.location, {q})
+        : removeQuery(this.props.location, 'q')
+    );
   };
 
   render() {
-    const {
-      location,
-      loading,
-      categories,
-      products,
-      setSearchText,
-      setPriceFilters,
-    } = this.props;
+    const props = {
+      ...this.props,
+      ...this.state,
+      setPriceFilters: this.setPriceFilters,
+      setSearchText: this.setSearchText,
+    };
 
-    const category = findById(categories, getActiveCategoryId(location));
+    const {location, categories, products} = props;
 
-    return (
-      <div>
-        <Header
-          searchText={getSearchText(location)}
-          setSearchText={setSearchText}
-        />
+    if (categories.length > 0) {
+      const activeCategoryId = getActiveCategoryId(location);
+      if (
+        !// No category selected.
+        (
+          activeCategoryId ||
+          // Attempting to visit invalid category.
+          categories.some(({id}) => id === activeCategoryId)
+        )
+      ) {
+        return (
+          <Redirect to={addQuery(location, {categoryId: categories[0].id})} />
+        );
+      }
+    }
 
-        <Row>
-          <PrimaryFlex>
-            <Sidebar
-              categories={categories}
-              minPrice={getMinPrice(location)}
-              maxPrice={getMaxPrice(location)}
-              setPriceFilters={setPriceFilters}
-            />
+    return <AppLayout {...props} />;
+  }
+}
 
-            <PrimaryContent>
-              <ProductGrid
-                title={(category && category.name) || ''}
-                items={products}
-                loading={!category || loading}
-              />
-            </PrimaryContent>
-          </PrimaryFlex>
-        </Row>
-
+export default function Routes() {
+  return (
+    <BrowserRouter>
+      <Switch>
         <Route
           path="/products"
-          render={({location, history}) => {
-            const {itemId} = qs.parse(location.search);
-            return (
-              <ProductDetailsModal
-                isOpen={Boolean(itemId)}
-                close={() => history.push(removeQuery(location, 'itemId'))}
-                item={findById(products, Number(itemId))}
-              />
-            );
-          }}
+          render={routeProps => <App {...routeProps} />}
         />
-      </div>
-    );
-  }
+        <Redirect to="/products" />
+      </Switch>
+    </BrowserRouter>
+  );
 }
