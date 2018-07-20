@@ -19,5 +19,15 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "devDependencies": {
+    "husky": "1.0.0-rc.13",
+    "prettier": "1.13.7",
+    "pretty-quick": "1.6.0"
   }
 }
