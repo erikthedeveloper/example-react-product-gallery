@@ -1,11 +1,25 @@
 import React from 'react';
 import './App.css';
+import logo from './logo.svg';
 
 export default function App() {
   return (
-    <div>
-      <h2>React Product Gallery</h2>
-      <p>This is the starter template. Have fun!</p>
+    <div className="App">
+      <header className="App-header">
+        <h2>Product Gallery Demo Project</h2>
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          React Docs
+        </a>
+      </header>
     </div>
   );
 }
