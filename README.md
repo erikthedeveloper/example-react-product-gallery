@@ -1,6 +1,6 @@
 _NOTE: To any who stumble onto this, this is sandbox project that I've been using to experiment with various Javascript and React-related goodies.
 It may or may not be live to play with in its current state at https://react-product-gallery.herokuapp.com/.
-This README instructions reflects the initial state of this example project repo as it was originally intended as a take-home demo project._
+The `master` branch reflects the starter template for the project intended as a take-home demo project. See `solution` for a completed implementation._
 
 # React Product Gallery
 
