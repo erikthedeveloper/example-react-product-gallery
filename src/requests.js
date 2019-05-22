@@ -1,10 +1,4 @@
 import * as data from './data';
-import {
-  getActiveCategoryId,
-  getMaxPrice,
-  getMinPrice,
-  getSearchText,
-} from './utils/routes';
 
 // Various filters for filtering down products
 const filterCategory = id => ({categoryId}) => categoryId === id;
@@ -71,20 +65,6 @@ export function getProduct(id) {
     const item = findById(data.products, id);
     setTimeout(resolve.bind(null, item), requestDelay());
   });
-}
-
-/**
- * Make query params from location (all search related state lives in URI)
- * @param {Object} location
- * @returns {Object}
- */
-export function productQueryParams(location) {
-  return {
-    activeCategoryId: getActiveCategoryId(location),
-    minPrice: getMinPrice(location),
-    maxPrice: getMaxPrice(location),
-    searchText: getSearchText(location),
-  };
 }
 
 /**
