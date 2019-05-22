@@ -2,21 +2,16 @@ import * as data from './data';
 
 /**
  * "Request" products given query params
- * @param activeCategoryId
+ * @param categoryId
  * @param minPrice
  * @param maxPrice
  * @param searchText
  * @returns {Promise}
  */
-export function getProducts({
-  activeCategoryId,
-  minPrice,
-  maxPrice,
-  searchText,
-}) {
+export function getProducts({categoryId, minPrice, maxPrice, searchText}) {
   return new Promise(resolve => {
     const filteredItems = data.products
-      .filter(filterCategory(activeCategoryId))
+      .filter(filterCategory(categoryId))
       .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
       .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
       .filter(
