@@ -8,20 +8,24 @@ import * as data from './data';
  * @param searchText
  * @returns {Promise}
  */
-export function getProducts({categoryId, minPrice, maxPrice, searchText}) {
-  return new Promise(resolve => {
-    const filteredItems = data.products
-      .filter(filterCategory(categoryId))
-      .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
-      .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
-      .filter(
-        searchText && searchText.length > 0
-          ? filterSearchText(searchText)
-          : noopTrue
-      );
+export async function getProducts({
+  categoryId,
+  minPrice,
+  maxPrice,
+  searchText,
+}) {
+  const filteredItems = data.products
+    .filter(filterCategory(categoryId))
+    .filter(minPrice ? filterMinPrice(minPrice) : noopTrue)
+    .filter(maxPrice ? filterMaxPrice(maxPrice) : noopTrue)
+    .filter(
+      searchText && searchText.length > 0
+        ? filterSearchText(searchText)
+        : noopTrue
+    );
 
-    setTimeout(resolve.bind(null, filteredItems), requestDelay());
-  });
+  await requestDelay();
+  return filteredItems;
 }
 
 /**
@@ -29,21 +33,19 @@ export function getProducts({categoryId, minPrice, maxPrice, searchText}) {
  * @param id
  * @returns {Promise}
  */
-export function getProduct(id) {
-  return new Promise(resolve => {
-    const item = data.products.find(item => item.id === id);
-    setTimeout(resolve.bind(null, item), requestDelay());
-  });
+export async function getProduct(id) {
+  const item = data.products.find(item => item.id === id);
+  await requestDelay();
+  return item;
 }
 
 /**
  * "Request" categories
  * @returns {Promise}
  */
-export function getCategories() {
-  return new Promise(resolve => {
-    setTimeout(resolve.bind(null, data.categories), requestDelay());
-  });
+export async function getCategories() {
+  await requestDelay();
+  return data.categories;
 }
 
 // Various filters for filtering down products
@@ -57,9 +59,12 @@ const filterSearchText = searchText => ({name}) =>
   name.toLowerCase().includes(searchText.toLowerCase());
 
 /**
- * Semi-random delay MS for "requests".
- * @return Number
+ * Semi-random delay for "requests".
+ * @return Promise
  */
-const requestDelay = () => Math.max(250, Math.ceil(Math.random() * 1500));
+const requestDelay = () =>
+  new Promise(resolve => {
+    setTimeout(resolve, Math.max(250, Math.ceil(Math.random() * 1500)));
+  });
 
 const noopTrue = () => true;
