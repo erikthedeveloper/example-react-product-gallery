@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import faker from 'faker';
 
 faker.seed(123);
@@ -53,7 +52,7 @@ const categories = ['Robots', 'Monsters', 'Robots v2', 'Kittens'].map(
  */
 const products = categories.reduce((products, category) => {
   return products.concat(
-    _.range(PRODUCTS_PER_CATEGORY).map(() => {
+    Array.from({length: PRODUCTS_PER_CATEGORY}).map(() => {
       productId++;
       const name = generateName(productId, category.name);
 

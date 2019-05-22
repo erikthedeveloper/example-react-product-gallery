@@ -1,5 +1,4 @@
 import * as data from './data';
-import {findById, noopTrue} from './utils';
 import {
   getActiveCategoryId,
   getMaxPrice,
@@ -22,6 +21,16 @@ const filterSearchText = searchText => ({name}) =>
  * @return Number
  */
 const requestDelay = () => Math.max(250, Math.ceil(Math.random() * 1500));
+
+const noopTrue = () => true;
+
+/**
+ * Find an item by id
+ * @param {{id: Number}[]} items
+ * @param {Number} id
+ * @return Object|null
+ */
+const findById = (items, id) => items.find(item => item.id === id);
 
 /**
  * "Request" products given query params
