@@ -1,0 +1,40 @@
+.header {
+  background-color: #f8cb00;
+  padding: 50px 0;
+}
+
+.header__content {
+  margin: 0 50px;
+  max-width: 1148px;
+  display: flex;
+  align-items: center;
+}
+
+.header__logo {
+  /* Same as sidebar width */
+  width: 250px;
+  font-size: 36px;
+  line-height: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header__search {
+  flex: 1;
+}
+
+.header__search-input {
+  background: #ffffff;
+  border-radius: 4px;
+  padding-left: 30px;
+  width: 100%;
+  max-width: 600px;
+  height: 51px;
+  font-size: 16px;
+}

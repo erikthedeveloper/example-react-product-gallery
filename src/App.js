@@ -33,9 +33,9 @@ export default function App() {
 
   return (
     <div>
-      <Header />
+      <Header title="Amazing Store" />
 
-      <div className="container">
+      <div className="container container--primary">
         <Sidebar
           categories={categories}
           categoryId={categoryId}

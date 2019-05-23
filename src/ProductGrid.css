@@ -1,0 +1,28 @@
+.ProductGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 28px;
+}
+
+.ProductGridItem {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e4e4e4;
+  box-shadow: 0 4px 14px 7px rgba(121, 121, 121, 0.05);
+  border-radius: 4px;
+  height: 350px;
+  cursor: pointer;
+}
+
+.ProductGridItem:hover {
+  border: 2px solid #f8cb00;
+}
+
+.ProductGridItem__img {
+}
+
+.ProductGridItem__name {
+}
+
+.ProductGridItem__price {
+}

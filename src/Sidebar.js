@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cn from 'classnames';
+import './Sidebar.css';
 import type {Category} from './types';
 
 export function Sidebar({
