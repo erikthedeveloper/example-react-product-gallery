@@ -1,40 +1,51 @@
+// @flow
 import React from 'react';
 import './App.css';
-import logo from './logo.svg';
-import * as requests from './requests';
+import type {Category, Product} from './types';
+import {getCategories, getProducts} from './requests';
+import {Header} from './Header';
+import {Sidebar} from './Sidebar';
+import {ProductGrid} from './ProductGrid';
 
 export default function App() {
-  // Here as an example to get you started with requests.js
+  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [products, setProducts] = React.useState<Product[]>([]);
+  const [categoryId, setCategoryId] = React.useState<null | number>(null);
+
   React.useEffect(() => {
-    (async () => {
-      const categories = await requests.getCategories();
-      const products = await requests.getProducts({
-        categoryId: categories[0].id,
-      });
-      const product = await requests.getProduct(products[0].id);
-      console.log('Example request: categories', categories);
-      console.log('Example request: products', products);
-      console.log('Example request: product', product);
-    })();
+    getCategories().then((categories: Category[]) => {
+      setCategories(categories);
+      setCategoryId(categories[0].id);
+    });
   }, []);
 
+  React.useEffect(
+    () => {
+      getProducts({categoryId}).then((products: Product[]) => {
+        setProducts(products);
+      });
+    },
+    [categoryId]
+  );
+
+  const {name: categoryName} =
+    categories.find(({id}) => id === categoryId) || {};
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>Product Gallery Demo Project</h2>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          React Docs
-        </a>
-      </header>
+    <div>
+      <Header />
+
+      <div className="container">
+        <Sidebar
+          categories={categories}
+          categoryId={categoryId}
+          setCategoryId={setCategoryId}
+        />
+        <div className="primary-content">
+          <h2 className="screen-title">{categoryName}</h2>
+          <ProductGrid products={products} />
+        </div>
+      </div>
     </div>
   );
 }
