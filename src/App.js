@@ -11,6 +11,7 @@ export default function App() {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [products, setProducts] = React.useState<Product[]>([]);
   const [categoryId, setCategoryId] = React.useState<null | number>(null);
+  const [searchText, setSearchText] = React.useState('');
 
   React.useEffect(() => {
     getCategories().then((categories: Category[]) => {
@@ -21,11 +22,11 @@ export default function App() {
 
   React.useEffect(
     () => {
-      getProducts({categoryId}).then((products: Product[]) => {
+      getProducts({categoryId, searchText}).then((products: Product[]) => {
         setProducts(products);
       });
     },
-    [categoryId]
+    [categoryId, searchText]
   );
 
   const {name: categoryName} =
@@ -33,7 +34,11 @@ export default function App() {
 
   return (
     <div>
-      <Header title="Amazing Store" />
+      <Header
+        title="Amazing Store"
+        searchText={searchText}
+        submitSearchText={value => setSearchText(value)}
+      />
 
       <div className="container container--primary">
         <Sidebar

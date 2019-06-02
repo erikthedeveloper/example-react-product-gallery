@@ -1,8 +1,19 @@
 // @flow
 import React from 'react';
 import './Header.css';
+import {useIntermediaryState} from './hooks/userIntermediaryState';
 
-export function Header({title}: {title: string}) {
+export function Header({
+  title,
+  searchText,
+  submitSearchText,
+}: {
+  title: string,
+  searchText: string,
+  submitSearchText: string => mixed,
+}) {
+  const [inputValue, setInputValue] = useIntermediaryState(searchText);
+
   return (
     <header className="header">
       <div className="header__content">
@@ -12,12 +23,18 @@ export function Header({title}: {title: string}) {
           </a>
         </div>
         <div className="header__search">
-          {/* TODO: Handle submit and stuff */}
-          <form>
+          <form
+            onSubmit={event => {
+              event.preventDefault();
+              submitSearchText(inputValue);
+            }}
+          >
             {/* TODO: Search icon */}
             <input
               type="text"
-              name="q"
+              name="searchText"
+              value={inputValue}
+              onChange={({target: {value}}) => setInputValue(value)}
               className="header__search-input"
               placeholder="Search products by name"
             />
