@@ -1,3 +1,13 @@
 body {
   font-family: 'Source Sans Pro', serif;
 }
+
+.button-reset {
+  background: none;
+  font-size: inherit;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}

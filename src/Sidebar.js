@@ -25,7 +25,11 @@ export function Sidebar({
               id === categoryId && 'sidebar__link--active'
             )}
           >
-            <button type="button" onClick={() => setCategoryId(id)}>
+            <button
+              type="button"
+              className="button-reset"
+              onClick={() => setCategoryId(id)}
+            >
               {name}
             </button>
           </li>

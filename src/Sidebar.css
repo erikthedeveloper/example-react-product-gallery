@@ -25,16 +25,6 @@
   padding: 0;
 }
 
-.sidebar__link button {
-  background: none;
-  font-size: inherit;
-  border: none;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
-}
-
 .sidebar__link--active {
   color: #f8cb00;
 }
