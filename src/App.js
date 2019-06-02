@@ -6,6 +6,7 @@ import {getCategories, getProducts} from './requests';
 import {Header} from './Header';
 import {Sidebar} from './Sidebar';
 import {ProductGrid} from './ProductGrid';
+import {FilterItem} from './components/FilterItem';
 
 export default function App() {
   const [categories, setCategories] = React.useState<Category[]>([]);
@@ -47,6 +48,11 @@ export default function App() {
           setCategoryId={setCategoryId}
         />
         <div className="primary-content">
+          {searchText && (
+            <FilterItem resetFilter={() => setSearchText('')}>
+              "{searchText}"
+            </FilterItem>
+          )}
           <h2 className="screen-title">{categoryName}</h2>
           <ProductGrid products={products} />
         </div>
