@@ -14,6 +14,7 @@
   cursor: pointer;
 }
 
+.ProductGridItem:focus,
 .ProductGridItem:hover {
   border: 1px solid #f8cb00;
 }
