@@ -23,6 +23,13 @@ export default function App() {
 
   React.useEffect(
     () => {
+      setSearchText('');
+    },
+    [categoryId]
+  );
+
+  React.useEffect(
+    () => {
       getProducts({categoryId, searchText}).then((products: Product[]) => {
         setProducts(products);
       });
