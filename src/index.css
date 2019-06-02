@@ -11,3 +11,7 @@ body {
   cursor: pointer;
   color: inherit;
 }
+
+.loading {
+  opacity: 0.7;
+}

@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cn from 'classnames';
 import './App.css';
 import type {Category} from './types';
 import {getCategories} from './requests';
@@ -16,11 +17,12 @@ export default function App() {
     setCategoryId,
     searchText,
     setSearchText,
-    products,
   } = useAppState();
+  const {products, loading} = useProductResults({categoryId, searchText});
 
-  const {name: categoryName} =
-    categories.find(({id}) => id === categoryId) || {};
+  const {name: categoryName} = categories.find(({id}) => id === categoryId) || {
+    name: 'Loading...',
+  };
 
   return (
     <div>
@@ -36,7 +38,7 @@ export default function App() {
           categoryId={categoryId}
           setCategoryId={setCategoryId}
         />
-        <div className="primary-content">
+        <div className={cn('primary-content', loading && 'loading')}>
           {searchText && (
             <FilterItem resetFilter={() => setSearchText('')}>
               "{searchText}"
@@ -54,7 +56,6 @@ function useAppState() {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [categoryId, setCategoryId] = React.useState<null | number>(null);
   const [searchText, setSearchText] = React.useState('');
-  const {products} = useProductResults({categoryId, searchText});
 
   React.useEffect(() => {
     getCategories().then((categories: Category[]) => {
@@ -76,6 +77,5 @@ function useAppState() {
     setCategoryId,
     searchText,
     setSearchText,
-    products,
   };
 }
