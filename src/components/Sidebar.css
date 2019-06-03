@@ -35,9 +35,3 @@
 .sidebar__link--active {
   color: #f8cb00;
 }
-
-.PriceFilter {
-  display: grid;
-  grid-template-columns: repeat(2, 70px) 1fr;
-  grid-gap: 5px;
-}
