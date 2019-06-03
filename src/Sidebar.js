@@ -2,19 +2,11 @@
 import React from 'react';
 import cn from 'classnames';
 import './Sidebar.css';
-import type {Category} from './types';
 import {useAppContext} from './state';
 import {useIntermediaryState} from './hooks/userIntermediaryState';
 
-export function Sidebar({
-  categories,
-  categoryId,
-  setCategoryId,
-}: {
-  categories: Category[],
-  categoryId: number | null,
-  setCategoryId: number => mixed,
-}) {
+export function Sidebar() {
+  const {categories, categoryId, setCategoryId} = useAppContext();
   return (
     <div className="sidebar">
       <div className="sidebar__title">All Categories</div>

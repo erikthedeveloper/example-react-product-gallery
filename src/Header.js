@@ -2,16 +2,10 @@
 import React from 'react';
 import './Header.css';
 import {useIntermediaryState} from './hooks/userIntermediaryState';
+import {useAppContext} from './state';
 
-export function Header({
-  title,
-  searchText,
-  submitSearchText,
-}: {
-  title: string,
-  searchText: string,
-  submitSearchText: string => mixed,
-}) {
+export function Header({title}: {title: string}) {
+  const {searchText, setSearchText} = useAppContext();
   const [inputValue, setInputValue] = useIntermediaryState(searchText);
 
   return (
@@ -26,7 +20,7 @@ export function Header({
           <form
             onSubmit={event => {
               event.preventDefault();
-              submitSearchText(inputValue);
+              setSearchText(inputValue);
             }}
           >
             {/* TODO: Search icon */}
