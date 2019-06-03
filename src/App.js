@@ -16,8 +16,14 @@ function App() {
     setCategoryId,
     searchText,
     setSearchText,
+    priceFilter: {minPrice, maxPrice, setPriceFilter},
   } = useAppContext();
-  const {products, loading} = useProductResults({categoryId, searchText});
+  const {products, loading} = useProductResults({
+    categoryId,
+    searchText,
+    minPrice,
+    maxPrice,
+  });
 
   const {name: categoryName} = categories.find(({id}) => id === categoryId) || {
     name: 'Loading...',
@@ -41,6 +47,24 @@ function App() {
           {searchText && (
             <FilterItem resetFilter={() => setSearchText('')}>
               "{searchText}"
+            </FilterItem>
+          )}
+          {minPrice && (
+            <FilterItem
+              resetFilter={() =>
+                setPriceFilter(filter => ({...filter, minPrice: null}))
+              }
+            >
+              Min: ${minPrice}
+            </FilterItem>
+          )}
+          {maxPrice && (
+            <FilterItem
+              resetFilter={() =>
+                setPriceFilter(filter => ({...filter, maxPrice: null}))
+              }
+            >
+              Max: ${maxPrice}
             </FilterItem>
           )}
           <h2 className="screen-title">{categoryName}</h2>

@@ -3,10 +3,15 @@ import * as React from 'react';
 import type {Category} from './types';
 import {getCategories} from './requests';
 
+const initialPriceFilter = {minPrice: null, maxPrice: null};
+
 function useAppState() {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [categoryId, setCategoryId] = React.useState<null | number>(null);
   const [searchText, setSearchText] = React.useState<string>('');
+  const [{minPrice, maxPrice}, setPriceFilter] = React.useState<{
+    [string]: number | null,
+  }>(initialPriceFilter);
 
   React.useEffect(() => {
     getCategories().then((categories: Category[]) => {
@@ -18,6 +23,7 @@ function useAppState() {
   React.useEffect(
     () => {
       setSearchText('');
+      setPriceFilter(initialPriceFilter);
     },
     [categoryId]
   );
@@ -28,6 +34,7 @@ function useAppState() {
     setCategoryId,
     searchText,
     setSearchText,
+    priceFilter: {minPrice, maxPrice, setPriceFilter},
   };
 }
 
