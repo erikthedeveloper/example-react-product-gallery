@@ -1,14 +1,21 @@
 .sidebar {
+  box-sizing: border-box;
   width: 250px;
   flex: none;
+  padding-right: 25px;
 }
 
 .sidebar__title {
   font-size: 14px;
+  text-transform: uppercase;
   font-weight: 700;
   color: #000000;
   letter-spacing: 0;
   margin-bottom: 20px;
+}
+
+.sidebar__title:not(:first-child) {
+  margin: 20px 0 10px 0;
 }
 
 .sidebar__links {
@@ -27,4 +34,10 @@
 
 .sidebar__link--active {
   color: #f8cb00;
+}
+
+.PriceFilter {
+  display: grid;
+  grid-template-columns: repeat(2, 70px) 1fr;
+  grid-gap: 5px;
 }

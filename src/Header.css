@@ -31,6 +31,7 @@
 
 .header__search-input {
   background: #ffffff;
+  border: 1px solid #e4e4e4;
   border-radius: 4px;
   padding-left: 30px;
   width: 100%;
