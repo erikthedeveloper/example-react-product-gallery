@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import './ProductGrid.css';
-import type {Product} from './types';
+import type {Product} from '../types';
 
 export function ProductGrid({products}: {products: Product[]}) {
   return (
