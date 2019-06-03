@@ -1,23 +1,22 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import cn from 'classnames';
 import './App.css';
-import type {Category} from './types';
-import {getCategories} from './requests';
 import {Header} from './Header';
 import {Sidebar} from './Sidebar';
 import {ProductGrid} from './ProductGrid';
 import {FilterItem} from './components/FilterItem';
 import {useProductResults} from './hooks/useProductResults';
+import {AppProvider, useAppContext} from './state';
 
-export default function App() {
+function App() {
   const {
     categories,
     categoryId,
     setCategoryId,
     searchText,
     setSearchText,
-  } = useAppState();
+  } = useAppContext();
   const {products, loading} = useProductResults({categoryId, searchText});
 
   const {name: categoryName} = categories.find(({id}) => id === categoryId) || {
@@ -52,30 +51,8 @@ export default function App() {
   );
 }
 
-function useAppState() {
-  const [categories, setCategories] = React.useState<Category[]>([]);
-  const [categoryId, setCategoryId] = React.useState<null | number>(null);
-  const [searchText, setSearchText] = React.useState('');
-
-  React.useEffect(() => {
-    getCategories().then((categories: Category[]) => {
-      setCategories(categories);
-      setCategoryId(categories[0].id);
-    });
-  }, []);
-
-  React.useEffect(
-    () => {
-      setSearchText('');
-    },
-    [categoryId]
-  );
-
-  return {
-    categories,
-    categoryId,
-    setCategoryId,
-    searchText,
-    setSearchText,
-  };
-}
+export default () => (
+  <AppProvider>
+    <App />
+  </AppProvider>
+);
