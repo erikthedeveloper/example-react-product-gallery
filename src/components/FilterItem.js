@@ -9,7 +9,7 @@ export function FilterItem({
   resetFilter: () => void,
 }) {
   return (
-    <small>
+    <small style={{marginRight: 5}}>
       {children}{' '}
       <button className="button-reset" onClick={resetFilter}>
         x
