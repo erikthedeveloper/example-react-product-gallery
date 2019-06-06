@@ -1,0 +1,18 @@
+.ProductDetails {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-gap: 28px;
+}
+
+.ProductDetails__image {
+  width: 250px;
+  height: 250px;
+}
+
+.ProductDetails__name {
+}
+
+.ProductDetails__price {
+}
+.ProductDetails__description {
+}
