@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import './Header.css';
-import {useIntermediaryState} from '../hooks/userIntermediaryState';
+import {useIntermediaryState} from '../hooks/useIntermediaryState';
 import {useAppContext} from '../context/AppContext';
 
 export function Header({title}: {title: string}) {
