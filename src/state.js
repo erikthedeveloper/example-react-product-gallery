@@ -13,6 +13,7 @@ function useAppState() {
     [string]: number | null,
   }>(initialPriceFilter);
 
+  // Request categories
   React.useEffect(() => {
     getCategories().then((categories: Category[]) => {
       setCategories(categories);
@@ -20,6 +21,7 @@ function useAppState() {
     });
   }, []);
 
+  // Reset filters when changing categories
   React.useEffect(
     () => {
       setSearchText('');
