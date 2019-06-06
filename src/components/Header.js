@@ -2,7 +2,7 @@
 import React from 'react';
 import './Header.css';
 import {useIntermediaryState} from '../hooks/userIntermediaryState';
-import {useAppContext} from '../state';
+import {useAppContext} from '../context/AppContext';
 
 export function Header({title}: {title: string}) {
   const {searchText, setSearchText} = useAppContext();

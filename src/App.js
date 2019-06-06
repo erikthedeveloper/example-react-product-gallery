@@ -3,7 +3,7 @@ import * as React from 'react';
 import './App.css';
 import {Header} from './components/Header';
 import {Sidebar} from './components/Sidebar';
-import {AppProvider} from './state';
+import {AppProvider} from './context/AppContext';
 import {ProductResults} from './components/ProductResults';
 import {ProductDetails} from './components/ProductDetails';
 import {Modal} from './components/Modal';

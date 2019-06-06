@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
-import type {Category} from './types';
-import {getCategories} from './requests';
+import type {Category} from '../types';
+import {getCategories} from '../requests';
 
 const initialPriceFilter = {minPrice: null, maxPrice: null};
 

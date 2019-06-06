@@ -3,7 +3,7 @@ import * as React from 'react';
 import cn from 'classnames';
 import {FilterItem} from './FilterItem';
 import {ProductGrid} from './ProductGrid';
-import {useAppContext} from '../state';
+import {useAppContext} from '../context/AppContext';
 import {useProductResults} from '../hooks/useProductResults';
 
 export function ProductResults() {

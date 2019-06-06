@@ -2,7 +2,7 @@
 import React from 'react';
 import cn from 'classnames';
 import './Sidebar.css';
-import {useAppContext} from '../state';
+import {useAppContext} from '../context/AppContext';
 import {PriceFilter} from './PriceFilter';
 
 export function Sidebar() {

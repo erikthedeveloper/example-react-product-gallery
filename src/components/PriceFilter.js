@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import './PriceFilter.css';
-import {useAppContext} from '../state';
+import {useAppContext} from '../context/AppContext';
 import {useIntermediaryState} from '../hooks/userIntermediaryState';
 
 export function PriceFilter() {
