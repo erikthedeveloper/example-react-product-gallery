@@ -5,6 +5,7 @@ import {FilterItem} from './FilterItem';
 import {ProductGrid} from './ProductGrid';
 import {useAppContext} from '../context/AppContext';
 import {useProductResults} from '../hooks/useProductResults';
+import {useActiveProductContext} from '../context/ActiveProductContext';
 
 export function ProductResults() {
   const {
@@ -14,6 +15,7 @@ export function ProductResults() {
     setSearchText,
     priceFilter: {minPrice, maxPrice, setPriceFilter},
   } = useAppContext();
+  const {loading: productIsLoading} = useActiveProductContext();
   const {products, loading} = useProductResults({
     categoryId,
     searchText,
@@ -26,7 +28,12 @@ export function ProductResults() {
   };
 
   return (
-    <div className={cn('primary-content', loading && 'loading')}>
+    <div
+      className={cn(
+        'primary-content',
+        (loading || productIsLoading) && 'loading'
+      )}
+    >
       {searchText && (
         <FilterItem resetFilter={() => setSearchText('')}>
           "{searchText}"

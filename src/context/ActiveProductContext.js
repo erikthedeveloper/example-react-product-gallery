@@ -28,7 +28,12 @@ function useActiveProduct() {
     setId(null);
   }
 
-  return {activeProduct, selectProduct, deselectProduct};
+  return {
+    activeProduct,
+    selectProduct,
+    deselectProduct,
+    loading: Boolean(id && !activeProduct),
+  };
 }
 
 // $FlowFixMe Don't care about initial context value
