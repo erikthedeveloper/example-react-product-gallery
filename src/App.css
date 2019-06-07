@@ -6,12 +6,12 @@ body {
 
 .container {
   margin: 0 50px;
-  max-width: 1148px;
+  width: 1148px;
 }
 
 .container--primary {
   display: flex;
-  padding-top: 38px;
+  padding: 38px 0;
 }
 
 .primary-content {

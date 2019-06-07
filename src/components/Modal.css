@@ -1,5 +1,5 @@
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -24,13 +24,14 @@
 
 .Modal__close {
   position: absolute;
-  font-size: 32px;
-  font-weight: 300;
+  font-size: 38px;
+  font-weight: 200;
   top: 0;
   right: 0;
-  padding: 15px;
+  padding: 20px;
+  line-height: 20px;
 }
 
 .Modal__contents {
-  padding: 100px 30px;
+  padding: 70px 50px;
 }

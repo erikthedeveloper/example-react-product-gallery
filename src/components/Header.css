@@ -1,11 +1,12 @@
 .header {
   background-color: #f8cb00;
+  width: 100%;
   padding: 50px 0;
 }
 
 .header__content {
   margin: 0 50px;
-  max-width: 1148px;
+  width: 1148px;
   display: flex;
   align-items: center;
 }
