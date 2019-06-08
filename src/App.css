@@ -1,33 +1,75 @@
-.App {
-  text-align: center;
+section {
+  margin: 0;
+  padding: 0;
+}
+/*
+ * Product Listing
+*/
+
+.product-listing {
+  display: grid;
+  height: 100vh;
+  grid-gap: 10px;
+  grid-template-rows: 1fr 3fr;
+  background-color: #fff;
+  color: #444;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.header {
+  background-color: #f8cb00;
+  display: grid;
+  height: 166px;
+  grid-template-columns: 1fr 3fr;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.product-container {
+  /*
+  background-color: tan;
+*/
+  display: grid;
+  grid-template-columns: 1fr 3fr;
 }
 
-.App-link {
-  color: #61dafb;
+.filter {
+  background: #fff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.store-title {
+  padding-left: 120px;
+  padding-top: 50px;
+  word-wrap: break-word;
 }
+
+.search {
+  padding: 59px 0 56px 100px;
+}
+
+.search-icon {
+  height: 25px;
+  width: 25px;
+}
+
+.search-form {
+  height: 51px;
+  width: 661px;
+  border-radius: 4px;
+  font-size: 15px;
+  color: rgba(123, 123, 123, 0.78);
+  letter-spacing: 0;
+  line-height: 31px;
+  text-align: left;
+}
+
+h1 {
+  font-family: SourceSansPro-Black;
+  font-size: 36px;
+  color: #fff;
+  letter-spacing: 0;
+  line-height: 33px;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+/*
+ * Product Detail Modal
+*/

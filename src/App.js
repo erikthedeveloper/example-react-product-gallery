@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import logo from './logo.svg';
 import * as requests from './requests';
+import Header from './Header';
 
 export default function App() {
   // Here as an example to get you started with requests.js
@@ -19,22 +20,36 @@ export default function App() {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>Product Gallery Demo Project</h2>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          React Docs
-        </a>
-      </header>
+    <div className="product-listing">
+      <Header />
+      <section className="product-container">
+        <div className="filter">
+          <h3>All Categories</h3>
+          <div className="categories">
+            <ul>
+              <li>Robots</li>
+              <li>Monsters</li>
+              <li>Kittens</li>
+            </ul>
+          </div>
+          <div className="price-filter">
+            <form>
+              <label>Min</label>
+              <input />
+              <label>Max</label>
+              <input />
+              <button>Go</button>
+            </form>
+          </div>
+        </div>
+        <div className="product-list">
+          <h2>Product Category</h2>
+          <ul>
+            <li>Product 1</li>
+            <li>Product 2</li>
+          </ul>
+        </div>
+      </section>
     </div>
   );
 }
