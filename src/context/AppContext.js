@@ -1,11 +1,14 @@
 // @flow
 import * as React from 'react';
-import type {Category} from '../types';
-import {getCategories} from '../requests';
+import type {Category, Product} from '../types';
+import {getCategories, getProduct} from '../requests';
 
 type State = {
   categories: Category[],
   categoryId: null | number,
+  activeProductId: null | number,
+  activeProduct: null | Product,
+  activeProductLoading: boolean,
   searchText: string,
   priceFilter: {['minPrice' | 'maxPrice']: number | null},
 };
@@ -13,6 +16,10 @@ type State = {
 type Action =
   | {type: 'FETCH_CATEGORIES', status: 'success', data: Category[]}
   | {type: 'SELECT_CATEGORY', id: number}
+  | {type: 'SELECT_PRODUCT', id: number}
+  | {type: 'DESELECT_PRODUCT'}
+  | {type: 'FETCH_PRODUCT', status: 'begin', id: number}
+  | {type: 'FETCH_PRODUCT', status: 'success', id: number, data: Product}
   | {
       type: 'UPDATE_SEARCH_CRITERIA',
       searchText?: string,
@@ -22,6 +29,9 @@ type Action =
 const initialState: State = {
   categories: [],
   categoryId: null,
+  activeProductId: null,
+  activeProduct: null,
+  activeProductLoading: false,
   searchText: '',
   priceFilter: {minPrice: null, maxPrice: null},
 };
@@ -42,6 +52,32 @@ function reducer(state: State, action: Action): State {
         searchText: initialState.searchText,
         priceFilter: initialState.priceFilter,
       };
+
+    case 'SELECT_PRODUCT':
+      return {
+        ...state,
+        activeProductId: action.id,
+      };
+
+    case 'DESELECT_PRODUCT':
+      return {
+        ...state,
+        activeProductId: null,
+        activeProduct: null,
+      };
+
+    case 'FETCH_PRODUCT':
+      if (action.status === 'begin') {
+        return {
+          ...state,
+          activeProductLoading: true,
+        };
+      }
+      if (action.status === 'success') {
+        const {data: activeProduct} = action;
+        return {...state, activeProduct, activeProductLoading: false};
+      }
+      return state;
 
     case 'UPDATE_SEARCH_CRITERIA':
       return {
@@ -84,6 +120,30 @@ export function AppProvider({children}: {children: React.Node}) {
       });
     },
     [dispatch]
+  );
+
+  // Request product when product selected
+  const {activeProductId} = state;
+  React.useEffect(
+    () => {
+      if (!activeProductId) {
+        return;
+      }
+      dispatch({
+        type: 'FETCH_PRODUCT',
+        status: 'begin',
+        id: activeProductId,
+      });
+      getProduct(activeProductId).then((data: Product) => {
+        dispatch({
+          type: 'FETCH_PRODUCT',
+          status: 'success',
+          id: activeProductId,
+          data,
+        });
+      });
+    },
+    [activeProductId]
   );
 
   return (

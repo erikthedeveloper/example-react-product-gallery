@@ -2,17 +2,17 @@
 import React from 'react';
 import './ProductGrid.css';
 import type {Product} from '../types';
-import {useActiveProductContext} from '../context/ActiveProductContext';
+import {useAppDispatch} from '../context/AppContext';
 
 export function ProductGrid({products}: {products: Product[]}) {
-  const {selectProduct} = useActiveProductContext();
+  const dispatch = useAppDispatch();
   return (
     <div className="ProductGrid">
       {products.map(product => (
         <button
           key={product.id}
           className="ProductGridItem"
-          onClick={() => selectProduct(product.id)}
+          onClick={() => dispatch({type: 'SELECT_PRODUCT', id: product.id})}
         >
           <img
             className="ProductGridItem__img"

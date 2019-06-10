@@ -5,15 +5,13 @@ import {FilterItem} from './FilterItem';
 import {ProductGrid} from './ProductGrid';
 import {useAppContext} from '../context/AppContext';
 import {useProductResults} from '../hooks/useProductResults';
-import {useActiveProductContext} from '../context/ActiveProductContext';
 
 export function ProductResults() {
   const [
-    {categories, categoryId, searchText, priceFilter},
+    {categories, activeProductLoading, categoryId, searchText, priceFilter},
     dispatch,
   ] = useAppContext();
   const {minPrice, maxPrice} = priceFilter;
-  const {loading: productIsLoading} = useActiveProductContext();
   const {products, loading} = useProductResults({
     categoryId,
     searchText,
@@ -29,7 +27,7 @@ export function ProductResults() {
     <div
       className={cn(
         'primary-content',
-        (loading || productIsLoading) && 'loading'
+        (loading || activeProductLoading) && 'loading'
       )}
     >
       {searchText && (
