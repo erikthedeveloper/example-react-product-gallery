@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react';
 import type {Category, Product} from '../types';
-import {getCategories, getProduct} from '../requests';
 
 type State = {
   categories: Category[],
@@ -106,41 +105,6 @@ export function AppProvider({children}: {children: React.Node}) {
   const [state, dispatch] = React.useReducer<State, Action>(
     reducer,
     initialState
-  );
-
-  // Request categories
-  React.useEffect(() => {
-    getCategories().then((data: Category[]) => {
-      dispatch({
-        type: 'FETCH_CATEGORIES',
-        status: 'success',
-        data,
-      });
-    });
-  }, []);
-
-  // Request product when product selected
-  const {activeProductId} = state;
-  React.useEffect(
-    () => {
-      if (!activeProductId) {
-        return;
-      }
-      dispatch({
-        type: 'FETCH_PRODUCT',
-        status: 'begin',
-        id: activeProductId,
-      });
-      getProduct(activeProductId).then((data: Product) => {
-        dispatch({
-          type: 'FETCH_PRODUCT',
-          status: 'success',
-          id: activeProductId,
-          data,
-        });
-      });
-    },
-    [activeProductId]
   );
 
   return (
