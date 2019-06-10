@@ -8,13 +8,11 @@ import {useProductResults} from '../hooks/useProductResults';
 import {useActiveProductContext} from '../context/ActiveProductContext';
 
 export function ProductResults() {
-  const {
-    categories,
-    categoryId,
-    searchText,
-    setSearchText,
-    priceFilter: {minPrice, maxPrice, setPriceFilter},
-  } = useAppContext();
+  const [
+    {categories, categoryId, searchText, priceFilter},
+    dispatch,
+  ] = useAppContext();
+  const {minPrice, maxPrice} = priceFilter;
   const {loading: productIsLoading} = useActiveProductContext();
   const {products, loading} = useProductResults({
     categoryId,
@@ -35,14 +33,21 @@ export function ProductResults() {
       )}
     >
       {searchText && (
-        <FilterItem resetFilter={() => setSearchText('')}>
+        <FilterItem
+          resetFilter={() =>
+            dispatch({type: 'UPDATE_SEARCH_CRITERIA', searchText: ''})
+          }
+        >
           "{searchText}"
         </FilterItem>
       )}
       {minPrice && (
         <FilterItem
           resetFilter={() =>
-            setPriceFilter(filter => ({...filter, minPrice: null}))
+            dispatch({
+              type: 'UPDATE_SEARCH_CRITERIA',
+              priceFilter: {...priceFilter, minPrice: null},
+            })
           }
         >
           Min: ${minPrice}
@@ -51,7 +56,10 @@ export function ProductResults() {
       {maxPrice && (
         <FilterItem
           resetFilter={() =>
-            setPriceFilter(filter => ({...filter, maxPrice: null}))
+            dispatch({
+              type: 'UPDATE_SEARCH_CRITERIA',
+              priceFilter: {...priceFilter, maxPrice: null},
+            })
           }
         >
           Max: ${maxPrice}

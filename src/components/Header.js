@@ -5,7 +5,7 @@ import {useIntermediaryState} from '../hooks/useIntermediaryState';
 import {useAppContext} from '../context/AppContext';
 
 export function Header({title}: {title: string}) {
-  const {searchText, setSearchText} = useAppContext();
+  const [{searchText}, dispatch] = useAppContext();
   const [inputValue, setInputValue] = useIntermediaryState(searchText);
 
   return (
@@ -20,7 +20,10 @@ export function Header({title}: {title: string}) {
           <form
             onSubmit={event => {
               event.preventDefault();
-              setSearchText(inputValue);
+              dispatch({
+                type: 'UPDATE_SEARCH_CRITERIA',
+                searchText: inputValue,
+              });
             }}
           >
             {/* TODO: Search icon */}

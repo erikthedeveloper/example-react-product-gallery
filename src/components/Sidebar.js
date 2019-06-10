@@ -6,7 +6,7 @@ import {useAppContext} from '../context/AppContext';
 import {PriceFilter} from './PriceFilter';
 
 export function Sidebar() {
-  const {categories, categoryId, setCategoryId} = useAppContext();
+  const [{categories, categoryId}, dispatch] = useAppContext();
   return (
     <div className="sidebar">
       <div className="sidebar__title">All Categories</div>
@@ -22,7 +22,7 @@ export function Sidebar() {
             <button
               type="button"
               className="button-reset"
-              onClick={() => setCategoryId(id)}
+              onClick={() => dispatch({type: 'SELECT_CATEGORY', id})}
             >
               {name}
             </button>

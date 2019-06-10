@@ -5,7 +5,7 @@ import {useAppContext} from '../context/AppContext';
 import {useIntermediaryState} from '../hooks/useIntermediaryState';
 
 export function PriceFilter() {
-  const {priceFilter} = useAppContext();
+  const [{priceFilter}, dispatch] = useAppContext();
   const [minPrice, setMinPrice] = useIntermediaryState(priceFilter.minPrice);
   const [maxPrice, setMaxPrice] = useIntermediaryState(priceFilter.maxPrice);
 
@@ -14,7 +14,10 @@ export function PriceFilter() {
       className="PriceFilter"
       onSubmit={event => {
         event.preventDefault();
-        priceFilter.setPriceFilter({minPrice, maxPrice});
+        dispatch({
+          type: 'UPDATE_SEARCH_CRITERIA',
+          priceFilter: {minPrice, maxPrice},
+        });
       }}
     >
       <input
