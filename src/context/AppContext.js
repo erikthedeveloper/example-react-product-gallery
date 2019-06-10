@@ -109,18 +109,15 @@ export function AppProvider({children}: {children: React.Node}) {
   );
 
   // Request categories
-  React.useEffect(
-    () => {
-      getCategories().then((data: Category[]) => {
-        dispatch({
-          type: 'FETCH_CATEGORIES',
-          status: 'success',
-          data,
-        });
+  React.useEffect(() => {
+    getCategories().then((data: Category[]) => {
+      dispatch({
+        type: 'FETCH_CATEGORIES',
+        status: 'success',
+        data,
       });
-    },
-    [dispatch]
-  );
+    });
+  }, []);
 
   // Request product when product selected
   const {activeProductId} = state;
